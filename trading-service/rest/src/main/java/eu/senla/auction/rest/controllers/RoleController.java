@@ -1,8 +1,9 @@
 package eu.senla.auction.rest.controllers;
 
 import eu.senla.auction.api.dto.CreateRoleDto;
+import eu.senla.auction.api.dto.RoleDto;
 import eu.senla.auction.api.mappers.RoleMapper;
-import eu.senla.auction.api.repository.RoleRepository;
+import eu.senla.auction.api.services.IRoleService;
 import eu.senla.auction.entity.entities.Role;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,18 +13,18 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/roles")
-@ComponentScan("eu.senla.auction.api.repository")
+@ComponentScan("eu.senla.auction.service.services")
 public class RoleController {
 
-    private final RoleRepository roleRepository;
+    private final IRoleService roleService;
 
-    public RoleController(RoleRepository roleRepository) {
-        this.roleRepository = roleRepository;
+    public RoleController(IRoleService roleService) {
+        this.roleService = roleService;
     }
 
     @PostMapping("/create")
-    public Role create(@RequestBody CreateRoleDto roleDto) {
-        return roleRepository.save(RoleMapper.mapCreateRole(roleDto));
+    public RoleDto create(@RequestBody CreateRoleDto roleDto) {
+        return roleService.createRole(roleDto);
     }
 
 }

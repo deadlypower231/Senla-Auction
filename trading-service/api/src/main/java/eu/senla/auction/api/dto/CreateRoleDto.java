@@ -9,6 +9,6 @@ import lombok.*;
 @Builder
 public class CreateRoleDto {
 
-    private String role;
+    private String roleName;
 
 }

@@ -11,20 +11,20 @@ public class RoleMapper {
     public Role mapRole(RoleDto source){
         return Role.builder()
                 .id(source.getId())
-                .role(source.getRole())
+                .roleName(source.getRoleName())
                 .build();
     }
 
     public RoleDto mapRoleDto(Role source){
         return RoleDto.builder()
                 .id(source.getId())
-                .role(source.getRole())
+                .roleName(source.getRoleName())
                 .build();
     }
 
     public Role mapCreateRole(CreateRoleDto source){
         return Role.builder()
-                .role(source.getRole())
+                .roleName(source.getRoleName())
                 .build();
     }
 
