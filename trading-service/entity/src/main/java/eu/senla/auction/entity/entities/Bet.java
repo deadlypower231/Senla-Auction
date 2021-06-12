@@ -1,20 +1,19 @@
 package eu.senla.auction.entity.entities;
 
 import eu.senla.auction.entity.enums.Status;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@SuperBuilder
 @Document(collection = "bet")
-public class Bet {
+public class Bet extends AEntity<String>{
 
     private User user;
     private Double price;

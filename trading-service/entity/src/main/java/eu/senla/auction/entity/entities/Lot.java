@@ -1,21 +1,20 @@
 package eu.senla.auction.entity.entities;
 
 import eu.senla.auction.entity.enums.Status;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
 import java.util.List;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@SuperBuilder
 @Document(collection = "lot")
-public class Lot {
+public class Lot extends AEntity<String>{
 
     private String name;
     private String description;
