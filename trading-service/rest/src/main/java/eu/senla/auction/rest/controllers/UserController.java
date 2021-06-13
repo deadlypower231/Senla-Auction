@@ -17,6 +17,7 @@ public class UserController {
         this.userService = userService;
     }
 
+    //todo test method
     @GetMapping
     public List<UserDto> say() {
         return userService.findAllUsers();

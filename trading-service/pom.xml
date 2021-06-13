@@ -29,6 +29,7 @@
         <javax.servlet.version>4.0.1</javax.servlet.version>
         <jersey.media.jason.version>3.0.2</jersey.media.jason.version>
         <mongodb.driver.sync.version>4.2.3</mongodb.driver.sync.version>
+        <spring.security.version>5.4.6</spring.security.version>
     </properties>
 
     <dependencyManagement>
@@ -62,6 +63,21 @@
                 <groupId>org.mongodb</groupId>
                 <artifactId>mongodb-driver-sync</artifactId>
                 <version>${mongodb.driver.sync.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-core</artifactId>
+                <version>${spring.security.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-config</artifactId>
+                <version>${spring.security.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-web</artifactId>
+                <version>${spring.security.version}</version>
             </dependency>
 
         </dependencies>

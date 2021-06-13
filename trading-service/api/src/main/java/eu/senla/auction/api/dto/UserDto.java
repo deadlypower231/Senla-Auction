@@ -2,10 +2,9 @@ package eu.senla.auction.api.dto;
 
 import eu.senla.auction.entity.entities.Bet;
 import eu.senla.auction.entity.entities.Lot;
+import eu.senla.auction.entity.entities.Role;
 import lombok.*;
-import org.springframework.data.mongodb.core.index.Indexed;
 
-import javax.management.relation.Role;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -24,7 +23,7 @@ public class UserDto {
     private Date birthday;
     private String password;
     private Double balance;
-    private Set<Role> role;
+    private Set<Role> roles;
     private List<Lot> lots;
     private List<Bet> bets;
 

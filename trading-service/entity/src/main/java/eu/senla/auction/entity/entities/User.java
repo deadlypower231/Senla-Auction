@@ -4,11 +4,9 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
-import javax.management.relation.Role;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -25,7 +23,8 @@ public class User extends AEntity<String> {
     private Date birthday;
     private String password;
     private Double balance;
-    private Set<Role> role;
+
+    private Set<Role> roles;
     private List<Lot> lots;
     private List<Bet> bets;
 
