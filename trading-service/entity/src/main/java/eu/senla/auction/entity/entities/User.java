@@ -23,7 +23,6 @@ public class User extends AEntity<String> {
     private Date birthday;
     private String password;
     private Double balance;
-
     private Set<Role> roles;
     private List<Lot> lots;
     private List<Bet> bets;

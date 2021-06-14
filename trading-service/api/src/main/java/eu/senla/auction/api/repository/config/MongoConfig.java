@@ -21,7 +21,7 @@ public class MongoConfig extends AbstractMongoClientConfiguration {
 
     @Value("${spring.data.mongodb.uri}")
     private String uri;
-    @Value("${spring.data.mongodb.database.name}")
+    @Value("${spring.data.mongodb.database}")
     private String dataBaseName;
 
     @Override
@@ -35,7 +35,6 @@ public class MongoConfig extends AbstractMongoClientConfiguration {
         MongoClientSettings mongoClientSettings = MongoClientSettings.builder()
                 .applyConnectionString(connectionString)
                 .build();
-
         return MongoClients.create(mongoClientSettings);
     }
 
