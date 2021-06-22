@@ -5,7 +5,11 @@
       <module fileurl="file://$PROJECT_DIR$/Auction.iml" filepath="$PROJECT_DIR$/Auction.iml" />
       <module fileurl="file://$PROJECT_DIR$/bank-service/bank-entity/bank-entity.iml" filepath="$PROJECT_DIR$/bank-service/bank-entity/bank-entity.iml" />
       <module fileurl="file://$PROJECT_DIR$/chat-service/chat-service.iml" filepath="$PROJECT_DIR$/chat-service/chat-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/payment-service/payment-api/payment-api.iml" filepath="$PROJECT_DIR$/payment-service/payment-api/payment-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/payment-service/payment-entity/payment-entity.iml" filepath="$PROJECT_DIR$/payment-service/payment-entity/payment-entity.iml" />
+      <module fileurl="file://$PROJECT_DIR$/payment-service/payment-rest/payment-rest.iml" filepath="$PROJECT_DIR$/payment-service/payment-rest/payment-rest.iml" />
       <module fileurl="file://$PROJECT_DIR$/payment-service/payment-service.iml" filepath="$PROJECT_DIR$/payment-service/payment-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/payment-service/payment-services/payment-services.iml" filepath="$PROJECT_DIR$/payment-service/payment-services/payment-services.iml" />
       <module fileurl="file://$PROJECT_DIR$/trading-service/api/trading-api.iml" filepath="$PROJECT_DIR$/trading-service/api/trading-api.iml" />
       <module fileurl="file://$PROJECT_DIR$/trading-service/entity/trading-entity.iml" filepath="$PROJECT_DIR$/trading-service/entity/trading-entity.iml" />
       <module fileurl="file://$PROJECT_DIR$/trading-service/rest/trading-rest.iml" filepath="$PROJECT_DIR$/trading-service/rest/trading-rest.iml" />

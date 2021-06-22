@@ -42,15 +42,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
         http
+
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/auth/**","/roles/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
+//                .httpBasic()
                 .formLogin()
                 .loginProcessingUrl("/login")
                 .defaultSuccessUrl("/users", true)
-                .permitAll().and().logout().invalidateHttpSession(true).clearAuthentication(true)
+                .permitAll()
+                .and().logout().invalidateHttpSession(true).clearAuthentication(true)
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/").permitAll();
 //                .and().exceptionHandling().accessDeniedHandler(accessDeniedHandler);
     }
