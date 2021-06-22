@@ -9,15 +9,11 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>trading-service</artifactId>
-    <packaging>pom</packaging>
-    <modules>
-        <module>trading-entity</module>
-        <module>trading-api</module>
-        <module>trading-rest</module>
-        <module>trading-services</module>
-    </modules>
+    <artifactId>chat-service</artifactId>
 
-
+    <properties>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+    </properties>
 
 </project>

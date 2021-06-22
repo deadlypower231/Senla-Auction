@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="trading-rest" />
+        <module name="trading-api" />
+        <module name="payment-service" />
+        <module name="bank-entity" />
+        <module name="trading-services" />
+        <module name="chat-service" />
+        <module name="trading-entity" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="Auction" target="8" />
+      <module name="bank-entity" target="8" />
+      <module name="bank-service" target="8" />
+      <module name="chat-service" target="8" />
+      <module name="payment-service" target="8" />
+      <module name="trading-api" target="8" />
+      <module name="trading-entity" target="8" />
+      <module name="trading-rest" target="8" />
+      <module name="trading-service" target="8" />
+      <module name="trading-services" target="8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
