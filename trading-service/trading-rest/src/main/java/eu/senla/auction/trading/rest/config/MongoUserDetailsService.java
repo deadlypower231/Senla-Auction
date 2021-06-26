@@ -23,7 +23,6 @@ public class MongoUserDetailsService implements UserDetailsService {
     @Autowired
     private UserRepository repository;
 
-
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 

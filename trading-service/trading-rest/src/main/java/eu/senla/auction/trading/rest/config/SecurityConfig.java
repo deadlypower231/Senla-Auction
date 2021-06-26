@@ -10,25 +10,29 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.client.RestTemplate;
 
 @Configuration
 @EnableWebSecurity
 @ComponentScan({"eu.senla.auction.trading.rest.config", "eu.senla.auction.trading.service"})
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final MongoUserDetailsService userDetailsService;
     private final PasswordEncoder passwordEncoder;
 
-    public SecurityConfig(MongoUserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
-        this.userDetailsService = userDetailsService;
+    public SecurityConfig(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
     }
 
+    @Bean
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
+    }
 
     @Bean
     public UserDetailsService mongoUserDetails() {
         return new MongoUserDetailsService();
     }
+
 
     @Override
     protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
@@ -40,15 +44,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    protected void configure(final HttpSecurity http) throws Exception {
+    protected void configure(HttpSecurity http) throws Exception {
         http
-
+                .httpBasic()
+                .and()
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/auth/**","/roles/**").permitAll()
+                .antMatchers("/auth/**", "/roles/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
-//                .httpBasic()
                 .formLogin()
                 .loginProcessingUrl("/login")
                 .defaultSuccessUrl("/users", true)

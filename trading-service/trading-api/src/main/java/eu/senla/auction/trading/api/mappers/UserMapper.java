@@ -1,6 +1,7 @@
 package eu.senla.auction.trading.api.mappers;
 
 import eu.senla.auction.trading.api.dto.CreateUserDto;
+import eu.senla.auction.trading.api.dto.HomePageDto;
 import eu.senla.auction.trading.api.dto.UserDto;
 import eu.senla.auction.trading.entity.entities.User;
 import lombok.experimental.UtilityClass;
@@ -49,6 +50,19 @@ public class UserMapper {
                 .email(source.getEmail())
                 .password(source.getPassword())
                 .birthday(source.getBirthday())
+                .build();
+    }
+
+    public HomePageDto mapHomePageDto(User source) {
+        return HomePageDto.builder()
+                .firstName(source.getFirstName())
+                .lastName(source.getLastName())
+                .balance(source.getBalance())
+                .birthday(source.getBirthday())
+                .email(source.getEmail())
+                .roles(source.getRoles())
+                .bets(source.getBets())
+                .lots(source.getLots())
                 .build();
     }
 

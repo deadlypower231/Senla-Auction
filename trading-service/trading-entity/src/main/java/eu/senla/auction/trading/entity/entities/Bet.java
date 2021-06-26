@@ -1,7 +1,10 @@
 package eu.senla.auction.trading.entity.entities;
 
 import eu.senla.auction.trading.entity.enums.Status;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -13,7 +16,7 @@ import java.util.Date;
 @AllArgsConstructor
 @SuperBuilder
 @Document(collection = "bet")
-public class Bet extends AEntity<String>{
+public class Bet extends AEntity<String> {
 
     private User user;
     private Double price;

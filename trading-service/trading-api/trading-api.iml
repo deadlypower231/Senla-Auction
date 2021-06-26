@@ -15,7 +15,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="entity" />
+    <orderEntry type="module" module-name="trading-entity" />
     <orderEntry type="library" name="Maven: org.springframework.data:spring-data-mongodb:3.2.1" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-tx:5.3.7" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-context:5.3.7" level="project" />

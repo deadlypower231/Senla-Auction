@@ -19,8 +19,8 @@ public class MainWebAppInitializer implements WebApplicationInitializer {
         root.scan("eu.senla.auction.trading");
         root.register(SecurityConfig.class);
         sc.addListener(new ContextLoaderListener(root));
-        sc.addFilter("securityFilter",new DelegatingFilterProxy("springSecurityFilterChain"))
-                .addMappingForUrlPatterns(null,false, "/*");
+        sc.addFilter("securityFilter", new DelegatingFilterProxy("springSecurityFilterChain"))
+                .addMappingForUrlPatterns(null, false, "/*");
         ServletRegistration.Dynamic appServlet = sc.addServlet("mvc", new DispatcherServlet(new GenericWebApplicationContext()));
         appServlet.setLoadOnStartup(1);
         appServlet.addMapping("/");

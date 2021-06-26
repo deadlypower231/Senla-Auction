@@ -13,6 +13,6 @@ import org.springframework.data.mongodb.core.mapping.MongoId;
 public abstract class AEntity<T> {
 
     @MongoId
-    protected String id;
+    protected T id;
 
 }

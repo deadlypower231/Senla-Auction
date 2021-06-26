@@ -12,8 +12,8 @@
         <module name="payment-rest" />
         <module name="payment-services" />
         <module name="bank-entity" />
-        <module name="trading-services" />
         <module name="chat-service" />
+        <module name="trading-services" />
         <module name="trading-entity" />
         <module name="payment-api" />
         <module name="payment-entity" />
@@ -24,6 +24,7 @@
       <module name="bank-entity" target="8" />
       <module name="bank-service" target="8" />
       <module name="chat-service" target="8" />
+      <module name="eureka-server" target="8" />
       <module name="payment-api" target="8" />
       <module name="payment-entity" target="8" />
       <module name="payment-rest" target="8" />

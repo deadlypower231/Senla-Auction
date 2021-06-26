@@ -10,11 +10,11 @@
       <module fileurl="file://$PROJECT_DIR$/payment-service/payment-rest/payment-rest.iml" filepath="$PROJECT_DIR$/payment-service/payment-rest/payment-rest.iml" />
       <module fileurl="file://$PROJECT_DIR$/payment-service/payment-service.iml" filepath="$PROJECT_DIR$/payment-service/payment-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/payment-service/payment-services/payment-services.iml" filepath="$PROJECT_DIR$/payment-service/payment-services/payment-services.iml" />
-      <module fileurl="file://$PROJECT_DIR$/trading-service/api/trading-api.iml" filepath="$PROJECT_DIR$/trading-service/api/trading-api.iml" />
-      <module fileurl="file://$PROJECT_DIR$/trading-service/entity/trading-entity.iml" filepath="$PROJECT_DIR$/trading-service/entity/trading-entity.iml" />
-      <module fileurl="file://$PROJECT_DIR$/trading-service/rest/trading-rest.iml" filepath="$PROJECT_DIR$/trading-service/rest/trading-rest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/trading-service/trading-api/trading-api.iml" filepath="$PROJECT_DIR$/trading-service/trading-api/trading-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/trading-service/trading-entity/trading-entity.iml" filepath="$PROJECT_DIR$/trading-service/trading-entity/trading-entity.iml" />
+      <module fileurl="file://$PROJECT_DIR$/trading-service/trading-rest/trading-rest.iml" filepath="$PROJECT_DIR$/trading-service/trading-rest/trading-rest.iml" />
       <module fileurl="file://$PROJECT_DIR$/trading-service/trading-service.iml" filepath="$PROJECT_DIR$/trading-service/trading-service.iml" />
-      <module fileurl="file://$PROJECT_DIR$/trading-service/service/trading-services.iml" filepath="$PROJECT_DIR$/trading-service/service/trading-services.iml" />
+      <module fileurl="file://$PROJECT_DIR$/trading-service/trading-services/trading-services.iml" filepath="$PROJECT_DIR$/trading-service/trading-services/trading-services.iml" />
     </modules>
   </component>
 </project>

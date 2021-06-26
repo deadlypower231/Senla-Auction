@@ -6,17 +6,18 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.bson.types.ObjectId;
+import org.springframework.data.mongodb.core.index.Indexed;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-@SuperBuilder
-@NoArgsConstructor
 @AllArgsConstructor
-public class Transfer extends AEntity<String> {
+@NoArgsConstructor
+@SuperBuilder
+public class Card extends AEntity<ObjectId> {
 
-    private ObjectId lotId;
-    private ObjectId dealerId;
-    private ObjectId buyerId;
-    private Double price;
+    @Indexed(unique = true)
+    private String numberCard;
+    private Double balance;
+    private String cvv;
 
 }
