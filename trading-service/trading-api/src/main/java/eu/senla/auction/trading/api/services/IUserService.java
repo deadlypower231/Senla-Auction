@@ -1,9 +1,6 @@
 package eu.senla.auction.trading.api.services;
 
-import eu.senla.auction.trading.api.dto.BalanceDto;
-import eu.senla.auction.trading.api.dto.CreateUserDto;
-import eu.senla.auction.trading.api.dto.HomePageDto;
-import eu.senla.auction.trading.api.dto.UserDto;
+import eu.senla.auction.trading.api.dto.*;
 
 import java.util.List;
 

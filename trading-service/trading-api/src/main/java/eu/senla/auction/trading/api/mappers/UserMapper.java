@@ -7,6 +7,7 @@ import eu.senla.auction.trading.entity.entities.Role;
 import eu.senla.auction.trading.entity.entities.User;
 import lombok.experimental.UtilityClass;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -87,12 +88,11 @@ public class UserMapper {
         return LotDto.builder()
                 .userWin(UserMapper.mapUserDto(source.getUserWin()))
 //                .bets(source.getBets().stream().map(UserMapper::mapBetDto).collect(Collectors.toList()))
-                .dateEnd(source.getDateEnd())
-                .dateStart(source.getDateStart())
+                .dateEnd(source.getDateEnd().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME))
+                .dateStart(source.getDateStart().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME))
                 .description(source.getDescription())
                 .name(source.getName())
                 .price(source.getPrice())
-                .status(source.getStatus())
                 .build();
     }
 

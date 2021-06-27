@@ -12,7 +12,9 @@ import eu.senla.auction.trading.entity.entities.User;
 import eu.senla.auction.trading.entity.enums.Status;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 @Service
 public class LotService implements ILotService {
@@ -34,12 +36,26 @@ public class LotService implements ILotService {
         entity.setStatus(Status.INACTIVE);
         entity.setPrice(0.0);
         Lot savedLot = this.lotRepository.save(entity);
-        if (currentUser.getLots() == null){
-            currentUser.setLots(Collections.singletonList(savedLot.getId().toString()));
-        }else {
-            currentUser.getLots().add(savedLot.getId().toString());
+        if (currentUser.getLots() == null) {
+            currentUser.setLots(Collections.singletonList(savedLot.getId()));
+        } else {
+            currentUser.getLots().add(savedLot.getId());
         }
         this.userRepository.save(currentUser);
         return LotMapper.mapLotDto(savedLot);
     }
+
+    @Override
+    public List<LotDto> getLots(Status status) {
+        User currentUser = this.userRepository.findByEmail(this.securityService.findLoggedInUser());
+        Iterable<Lot> lots = this.lotRepository.findAllById(currentUser.getLots());
+        List<Lot> result = new ArrayList<>();
+        for (Lot x : lots) {
+            if (x.getStatus().equals(status)) {
+                result.add(x);
+            }
+        }
+        return LotMapper.mapLotsDto(result);
+    }
+
 }

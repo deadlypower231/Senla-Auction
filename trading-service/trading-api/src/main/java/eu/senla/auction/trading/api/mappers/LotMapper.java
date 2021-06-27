@@ -4,12 +4,11 @@ import eu.senla.auction.trading.api.dto.CreateLotDto;
 import eu.senla.auction.trading.api.dto.LotDto;
 import eu.senla.auction.trading.entity.entities.Lot;
 import lombok.experimental.UtilityClass;
-import org.springframework.format.annotation.DateTimeFormat;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @UtilityClass
 public class LotMapper {
@@ -23,15 +22,19 @@ public class LotMapper {
                 .build();
     }
 
-    public LotDto mapLotDto(Lot source){
+    public LotDto mapLotDto(Lot source) {
         return LotDto.builder()
                 .name(source.getName())
                 .price(source.getPrice())
                 .description(source.getDescription())
-                .dateStart(source.getDateStart())
-                .dateEnd(source.getDateEnd())
+                .dateStart(source.getDateStart().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME))
+                .dateEnd(source.getDateEnd().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME))
                 .userWin(Optional.ofNullable(UserMapper.mapUserDto(source.getUserWin())).orElse(null))
                 .build();
+    }
+
+    public List<LotDto> mapLotsDto(List<Lot> source) {
+        return source.stream().map(LotMapper::mapLotDto).collect(Collectors.toList());
     }
 
 }

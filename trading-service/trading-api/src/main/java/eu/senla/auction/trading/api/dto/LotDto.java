@@ -20,11 +20,10 @@ public class LotDto {
 
     private String name;
     private String description;
-    private LocalDateTime dateStart;
-    private LocalDateTime dateEnd;
+    private String dateStart;
+    private String dateEnd;
     private Double price;
     private UserDto userWin;
     private List<BetDto> bets;
-    private Status status;
 
 }

@@ -61,13 +61,11 @@ public class UserService implements IUserService {
         user.setEmail(createUserDto.getEmail());
         user.setBirthday(createUserDto.getBirthday());
         UserDto savedUser = UserMapper.mapUserDto(userRepository.save(user));
-
         BankDto postBank = new BankDto();
         postBank.setUserId(savedUser.getId());
         postBank.setBalance(0.0);
         BankDto bankDto = restTemplate.postForObject(BANK_SERVICE + "/create", postBank, BankDto.class);
         savedUser.setBalance(Optional.ofNullable(bankDto.getBalance()).orElse(0.0));
-
         return savedUser;
     }
 
