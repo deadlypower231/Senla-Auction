@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -15,10 +16,14 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @AllArgsConstructor
 @SuperBuilder
 @Document(collection = "role")
-public class Role extends AEntity<String> {
+public class Role extends AEntity<ObjectId> {
 
     @Field(name = "roleName")
     @Indexed(unique = true)
     private String roleName;
 
+    @Override
+    public String toString() {
+        return  "roleName=" + roleName;
+    }
 }

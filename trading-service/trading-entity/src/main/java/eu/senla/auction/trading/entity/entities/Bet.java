@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
@@ -16,11 +17,11 @@ import java.util.Date;
 @AllArgsConstructor
 @SuperBuilder
 @Document(collection = "bet")
-public class Bet extends AEntity<String> {
+public class Bet extends AEntity<ObjectId> {
 
     private User user;
     private Double price;
-    private Date date;
+    private String date;
     private Lot lot;
     private Status status;
 

@@ -1,6 +1,7 @@
 package eu.senla.auction.trading.rest.controllers;
 
 import eu.senla.auction.trading.api.dto.BalanceDto;
+import eu.senla.auction.trading.api.dto.CreateUserDto;
 import eu.senla.auction.trading.api.dto.HomePageDto;
 import eu.senla.auction.trading.api.dto.UserDto;
 import eu.senla.auction.trading.api.services.IUserService;
@@ -32,6 +33,11 @@ public class UserController {
     @PostMapping("/addBalance")
     public Boolean addBalance(@RequestBody BalanceDto balanceDto) {
         return this.userService.addBalance(balanceDto);
+    }
+
+    @PatchMapping("/update")
+    public HomePageDto updUser(@RequestBody CreateUserDto userDto) {
+        return this.userService.updUser(userDto);
     }
 
 }

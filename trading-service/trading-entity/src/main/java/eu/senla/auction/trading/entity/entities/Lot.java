@@ -6,9 +6,11 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
@@ -17,12 +19,12 @@ import java.util.List;
 @AllArgsConstructor
 @SuperBuilder
 @Document(collection = "lot")
-public class Lot extends AEntity<String> {
+public class Lot extends AEntity<ObjectId> {
 
     private String name;
     private String description;
-    private Date dateStart;
-    private Date dateEnd;
+    private LocalDateTime dateStart;
+    private LocalDateTime dateEnd;
     private Double price;
     private User userWin;
     private List<Bet> bets;

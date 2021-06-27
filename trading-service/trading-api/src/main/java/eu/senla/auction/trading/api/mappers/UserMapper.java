@@ -1,8 +1,9 @@
 package eu.senla.auction.trading.api.mappers;
 
-import eu.senla.auction.trading.api.dto.CreateUserDto;
-import eu.senla.auction.trading.api.dto.HomePageDto;
-import eu.senla.auction.trading.api.dto.UserDto;
+import eu.senla.auction.trading.api.dto.*;
+import eu.senla.auction.trading.entity.entities.Bet;
+import eu.senla.auction.trading.entity.entities.Lot;
+import eu.senla.auction.trading.entity.entities.Role;
 import eu.senla.auction.trading.entity.entities.User;
 import lombok.experimental.UtilityClass;
 
@@ -12,34 +13,33 @@ import java.util.stream.Collectors;
 @UtilityClass
 public class UserMapper {
 
-    public User mapUser(UserDto source) {
-        return User.builder()
-                .id(source.getId())
+    public UserDto mapUserDto(User source) {
+        if (source == null){
+            return null;
+        }
+        return UserDto.builder()
+                .id(String.valueOf(source.getId()))
                 .firstName(source.getFirstName())
                 .lastName(source.getLastName())
                 .email(source.getEmail())
                 .balance(source.getBalance())
-                .password(source.getPassword())
                 .birthday(source.getBirthday())
-                .lots(source.getLots())
-                .bets(source.getBets())
-                .roles(source.getRoles())
+                .password(source.getPassword())
+                .roles(source.getRoles().stream().map(RoleMapper::mapRoleDto).collect(Collectors.toSet()))
                 .build();
     }
 
-    //todo date format
-    public UserDto mapUserDto(User source) {
-        return UserDto.builder()
-                .id(source.getId())
+    public User mapUser(UserDto source) {
+        return User.builder()
                 .firstName(source.getFirstName())
                 .lastName(source.getLastName())
                 .email(source.getEmail())
                 .balance(source.getBalance())
                 .birthday(source.getBirthday())
                 .password(source.getPassword())
-                .lots(source.getLots())
-                .bets(source.getBets())
-                .roles(source.getRoles())
+//                .lots(source.getLots().stream().map(UserMapper::mapLot).collect(Collectors.toList()))
+//                .bets(source.getBets().stream().map(UserMapper::mapBet).collect(Collectors.toList()))
+//                .roles(source.getRoles().stream().map(UserMapper::mapRole).collect(Collectors.toSet()))
                 .build();
     }
 
@@ -60,14 +60,38 @@ public class UserMapper {
                 .balance(source.getBalance())
                 .birthday(source.getBirthday())
                 .email(source.getEmail())
-                .roles(source.getRoles())
-                .bets(source.getBets())
-                .lots(source.getLots())
+                .roles(source.getRoles().stream().map(RoleMapper::mapRoleDto).collect(Collectors.toSet()))
+//                .bets(source.getBets().stream().map(UserMapper::mapBetDto).collect(Collectors.toList()))
+//                .lots(source.getLots().stream().map(UserMapper::mapLotDto).collect(Collectors.toList()))
                 .build();
     }
 
     public List<UserDto> mapUsersDto(List<User> source) {
         return source.stream().map(UserMapper::mapUserDto).collect(Collectors.toList());
+    }
+
+
+    private BetDto mapBetDto(Bet source) {
+        return BetDto.builder()
+                .price(source.getPrice())
+                .lotDto(mapLotDto(source.getLot()))
+                .date(source.getDate())
+                .status(source.getStatus())
+                .userDto(mapUserDto(source.getUser()))
+                .build();
+    }
+
+    private LotDto mapLotDto(Lot source) {
+        return LotDto.builder()
+                .userWin(UserMapper.mapUserDto(source.getUserWin()))
+                .bets(source.getBets().stream().map(UserMapper::mapBetDto).collect(Collectors.toList()))
+                .dateEnd(source.getDateEnd())
+                .dateStart(source.getDateStart())
+                .description(source.getDescription())
+                .name(source.getName())
+                .price(source.getPrice())
+                .status(source.getStatus())
+                .build();
     }
 
 }

@@ -28,6 +28,9 @@
           <element id="library" level="project" name="Maven: org.mongodb:mongodb-driver-sync:4.2.3" />
           <element id="library" level="project" name="Maven: org.mongodb:bson:4.2.3" />
           <element id="library" level="project" name="Maven: org.mongodb:mongodb-driver-core:4.2.3" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.12.3" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-core:2.12.3" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.6.0" />
           <element id="archive" name="trading-services-1.0-SNAPSHOT.jar">
             <element id="module-output" name="trading-services" />
           </element>
@@ -48,8 +51,6 @@
           <element id="library" level="project" name="Maven: org.glassfish.hk2:osgi-resource-locator:1.0.3" />
           <element id="library" level="project" name="Maven: org.glassfish.jersey.ext:jersey-entity-filtering:3.0.2" />
           <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.12.2" />
-          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.12.2" />
-          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-core:2.12.2" />
           <element id="library" level="project" name="Maven: com.fasterxml.jackson.module:jackson-module-jaxb-annotations:2.12.2" />
           <element id="library" level="project" name="Maven: javax.xml.bind:jaxb-api:2.3.1" />
           <element id="library" level="project" name="Maven: javax.activation:javax.activation-api:1.2.0" />

@@ -8,16 +8,9 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class RoleMapper {
 
-    public Role mapRole(RoleDto source) {
-        return Role.builder()
-                .id(source.getId())
-                .roleName(source.getRoleName())
-                .build();
-    }
-
     public RoleDto mapRoleDto(Role source) {
         return RoleDto.builder()
-                .id(source.getId())
+                .id(source.getId().toHexString())
                 .roleName(source.getRoleName())
                 .build();
     }

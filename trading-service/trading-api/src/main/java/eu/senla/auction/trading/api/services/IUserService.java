@@ -16,5 +16,7 @@ public interface IUserService {
     HomePageDto getCurrentUser();
 
     Boolean addBalance(BalanceDto balanceDto);
+    //test
+    HomePageDto updUser(CreateUserDto createUserDto);
 
 }

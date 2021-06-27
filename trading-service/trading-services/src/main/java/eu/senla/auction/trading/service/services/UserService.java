@@ -40,6 +40,15 @@ public class UserService implements IUserService {
         this.securityService = securityService;
     }
 
+    //test
+    @Override
+    public HomePageDto updUser(CreateUserDto createUserDto) {
+        User user = this.userRepository.findByEmail(this.securityService.findLoggedInUser());
+        user.setLastName(createUserDto.getLastName());
+
+        return UserMapper.mapHomePageDto(this.userRepository.save(user));
+    }
+
     @Override
     @Transactional
     public UserDto saveUser(CreateUserDto createUserDto) {
@@ -74,7 +83,7 @@ public class UserService implements IUserService {
     @Override
     public Boolean addBalance(BalanceDto balanceDto) {
         User user = userRepository.findByEmail(this.securityService.findLoggedInUser());
-        balanceDto.setUserId(user.getId());
+        balanceDto.setUserId(String.valueOf(user.getId()));
         return restTemplate.postForObject(BANK_SERVICE + "/addBalance", balanceDto, Boolean.class);
     }
 
