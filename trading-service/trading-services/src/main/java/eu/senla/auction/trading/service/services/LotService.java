@@ -1,7 +1,7 @@
 package eu.senla.auction.trading.service.services;
 
-import eu.senla.auction.trading.api.dto.CreateLotDto;
-import eu.senla.auction.trading.api.dto.LotDto;
+import eu.senla.auction.trading.api.dto.lot.CreateLotDto;
+import eu.senla.auction.trading.api.dto.lot.LotDto;
 import eu.senla.auction.trading.api.mappers.LotMapper;
 import eu.senla.auction.trading.api.repository.LotRepository;
 import eu.senla.auction.trading.api.repository.UserRepository;
@@ -46,7 +46,7 @@ public class LotService implements ILotService {
     }
 
     @Override
-    public List<LotDto> getLots(Status status) {
+    public List<LotDto> getLotsCurrentUser(Status status) {
         User currentUser = this.userRepository.findByEmail(this.securityService.findLoggedInUser());
         Iterable<Lot> lots = this.lotRepository.findAllById(currentUser.getLots());
         List<Lot> result = new ArrayList<>();
@@ -54,6 +54,16 @@ public class LotService implements ILotService {
             if (x.getStatus().equals(status)) {
                 result.add(x);
             }
+        }
+        return LotMapper.mapLotsDto(result);
+    }
+
+    @Override
+    public List<LotDto> getAllLots(Status status) {
+        Iterable<Lot> lots = this.lotRepository.findAllByStatus(status);
+        List<Lot> result = new ArrayList<>();
+        for (Lot x : lots) {
+                result.add(x);
         }
         return LotMapper.mapLotsDto(result);
     }

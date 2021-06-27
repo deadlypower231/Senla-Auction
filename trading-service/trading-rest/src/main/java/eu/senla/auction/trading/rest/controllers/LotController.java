@@ -1,7 +1,7 @@
 package eu.senla.auction.trading.rest.controllers;
 
-import eu.senla.auction.trading.api.dto.CreateLotDto;
-import eu.senla.auction.trading.api.dto.LotDto;
+import eu.senla.auction.trading.api.dto.lot.CreateLotDto;
+import eu.senla.auction.trading.api.dto.lot.LotDto;
 import eu.senla.auction.trading.api.services.ILotService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

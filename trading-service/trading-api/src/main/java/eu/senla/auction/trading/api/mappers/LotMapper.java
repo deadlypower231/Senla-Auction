@@ -1,7 +1,7 @@
 package eu.senla.auction.trading.api.mappers;
 
-import eu.senla.auction.trading.api.dto.CreateLotDto;
-import eu.senla.auction.trading.api.dto.LotDto;
+import eu.senla.auction.trading.api.dto.lot.CreateLotDto;
+import eu.senla.auction.trading.api.dto.lot.LotDto;
 import eu.senla.auction.trading.entity.entities.Lot;
 import lombok.experimental.UtilityClass;
 
@@ -24,6 +24,7 @@ public class LotMapper {
 
     public LotDto mapLotDto(Lot source) {
         return LotDto.builder()
+                .id(source.getId())
                 .name(source.getName())
                 .price(source.getPrice())
                 .description(source.getDescription())

@@ -1,9 +1,12 @@
 package eu.senla.auction.trading.api.mappers;
 
-import eu.senla.auction.trading.api.dto.*;
+import eu.senla.auction.trading.api.dto.bet.BetDto;
+import eu.senla.auction.trading.api.dto.lot.LotDto;
+import eu.senla.auction.trading.api.dto.user.CreateUserDto;
+import eu.senla.auction.trading.api.dto.user.HomePageDto;
+import eu.senla.auction.trading.api.dto.user.UserDto;
 import eu.senla.auction.trading.entity.entities.Bet;
 import eu.senla.auction.trading.entity.entities.Lot;
-import eu.senla.auction.trading.entity.entities.Role;
 import eu.senla.auction.trading.entity.entities.User;
 import lombok.experimental.UtilityClass;
 

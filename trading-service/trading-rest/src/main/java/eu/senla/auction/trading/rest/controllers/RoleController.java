@@ -1,7 +1,7 @@
 package eu.senla.auction.trading.rest.controllers;
 
-import eu.senla.auction.trading.api.dto.CreateRoleDto;
-import eu.senla.auction.trading.api.dto.RoleDto;
+import eu.senla.auction.trading.api.dto.role.CreateRoleDto;
+import eu.senla.auction.trading.api.dto.role.RoleDto;
 import eu.senla.auction.trading.api.services.IRoleService;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.bind.annotation.PostMapping;

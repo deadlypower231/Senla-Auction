@@ -38,7 +38,7 @@ public class ScheduledTask implements IScheduledTask {
         List<Lot> lots = this.lotRepository.findAllByStatus(Status.ACTIVE).stream()
                 .filter(x -> x.getDateEnd().isBefore(LocalDateTime.now())).collect(Collectors.toList());
         for (Lot x : lots) {
-            x.setStatus(Status.FINISHED);
+            x.setStatus(Status.COMPLETED);
         }
         this.lotRepository.saveAll(lots);
 

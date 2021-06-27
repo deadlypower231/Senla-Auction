@@ -1,4 +1,4 @@
-package eu.senla.auction.trading.api.dto;
+package eu.senla.auction.trading.api.dto.payment;
 
 import lombok.*;
 

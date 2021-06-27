@@ -1,8 +1,8 @@
 package eu.senla.auction.trading.rest.controllers;
 
 
-import eu.senla.auction.trading.api.dto.CreateUserDto;
-import eu.senla.auction.trading.api.dto.UserDto;
+import eu.senla.auction.trading.api.dto.user.CreateUserDto;
+import eu.senla.auction.trading.api.dto.user.UserDto;
 import eu.senla.auction.trading.api.services.IUserService;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.bind.annotation.PostMapping;

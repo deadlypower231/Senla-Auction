@@ -1,7 +1,7 @@
 package eu.senla.auction.trading.service.services;
 
-import eu.senla.auction.trading.api.dto.CreateRoleDto;
-import eu.senla.auction.trading.api.dto.RoleDto;
+import eu.senla.auction.trading.api.dto.role.CreateRoleDto;
+import eu.senla.auction.trading.api.dto.role.RoleDto;
 import eu.senla.auction.trading.api.mappers.RoleMapper;
 import eu.senla.auction.trading.api.repository.RoleRepository;
 import eu.senla.auction.trading.api.services.IRoleService;

@@ -1,14 +1,10 @@
-package eu.senla.auction.trading.api.dto;
+package eu.senla.auction.trading.api.dto.lot;
 
-import eu.senla.auction.trading.entity.entities.Bet;
-import eu.senla.auction.trading.entity.entities.User;
-import eu.senla.auction.trading.entity.enums.Status;
+import eu.senla.auction.trading.api.dto.bet.BetDto;
+import eu.senla.auction.trading.api.dto.user.UserDto;
 import lombok.*;
+import org.bson.types.ObjectId;
 
-import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
-import java.time.ZonedDateTime;
-import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -18,6 +14,7 @@ import java.util.List;
 @Builder
 public class LotDto {
 
+    private ObjectId id;
     private String name;
     private String description;
     private String dateStart;

@@ -9,7 +9,7 @@ import lombok.experimental.SuperBuilder;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -19,10 +19,10 @@ import java.util.Date;
 @Document(collection = "bet")
 public class Bet extends AEntity<ObjectId> {
 
-    private User user;
+    private ObjectId user;
     private Double price;
-    private String date;
-    private Lot lot;
+    private LocalDateTime dateTime;
+    private ObjectId lot;
     private Status status;
 
 }

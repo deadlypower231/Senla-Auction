@@ -1,4 +1,4 @@
-package eu.senla.auction.trading.api.dto;
+package eu.senla.auction.trading.api.dto.role;
 
 import lombok.*;
 
@@ -7,8 +7,9 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CreateRoleDto {
+public class RoleDto {
 
+    private String id;
     private String roleName;
 
 }
