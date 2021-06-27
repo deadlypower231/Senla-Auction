@@ -1,10 +1,8 @@
 package eu.senla.auction.trading.api.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
 
 @Getter
 @Setter

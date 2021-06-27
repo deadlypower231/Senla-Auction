@@ -7,7 +7,9 @@ import eu.senla.auction.trading.api.dto.UserDto;
 import eu.senla.auction.trading.api.services.IUserService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/users")
@@ -25,9 +27,12 @@ public class UserController {
         return userService.findAllUsers();
     }
 
+    //todo
     @GetMapping
-    public HomePageDto homePage() {
-        return userService.getCurrentUser();
+    public Map<String, Object> homePage() {
+        Map<String, Object> result = new HashMap<>();
+        result.put("currentUser", this.userService.getCurrentUser());
+        return result;
     }
 
     @PostMapping("/addBalance")

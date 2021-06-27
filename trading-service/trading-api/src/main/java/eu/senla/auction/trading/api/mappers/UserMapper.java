@@ -25,7 +25,6 @@ public class UserMapper {
                 .balance(source.getBalance())
                 .birthday(source.getBirthday())
                 .password(source.getPassword())
-                .roles(source.getRoles().stream().map(RoleMapper::mapRoleDto).collect(Collectors.toSet()))
                 .build();
     }
 
@@ -60,9 +59,6 @@ public class UserMapper {
                 .balance(source.getBalance())
                 .birthday(source.getBirthday())
                 .email(source.getEmail())
-                .roles(source.getRoles().stream().map(RoleMapper::mapRoleDto).collect(Collectors.toSet()))
-//                .bets(source.getBets().stream().map(UserMapper::mapBetDto).collect(Collectors.toList()))
-//                .lots(source.getLots().stream().map(UserMapper::mapLotDto).collect(Collectors.toList()))
                 .build();
     }
 
@@ -72,6 +68,9 @@ public class UserMapper {
 
 
     private BetDto mapBetDto(Bet source) {
+        if (source == null){
+            return null;
+        }
         return BetDto.builder()
                 .price(source.getPrice())
                 .lotDto(mapLotDto(source.getLot()))
@@ -82,9 +81,12 @@ public class UserMapper {
     }
 
     private LotDto mapLotDto(Lot source) {
+        if (source == null){
+            return null;
+        }
         return LotDto.builder()
                 .userWin(UserMapper.mapUserDto(source.getUserWin()))
-                .bets(source.getBets().stream().map(UserMapper::mapBetDto).collect(Collectors.toList()))
+//                .bets(source.getBets().stream().map(UserMapper::mapBetDto).collect(Collectors.toList()))
                 .dateEnd(source.getDateEnd())
                 .dateStart(source.getDateStart())
                 .description(source.getDescription())

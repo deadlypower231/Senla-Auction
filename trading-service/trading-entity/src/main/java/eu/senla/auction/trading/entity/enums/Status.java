@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public enum Status {
 
-    INACTIVE((short) 0), ACTIVE((short) 1);
+    INACTIVE((short) 0), ACTIVE((short) 1), FINISHED((short) 2);
 
     private static final Map<Short, Status> LOOKUP;
 

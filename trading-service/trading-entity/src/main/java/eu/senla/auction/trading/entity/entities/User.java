@@ -13,9 +13,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -33,7 +31,7 @@ public class User extends AEntity<ObjectId> {
     private String password;
     private Double balance;
     private Set<Role> roles;
-    private List<Lot> lots;
+    private List<String> lots;
     private List<Bet> bets;
 
 }

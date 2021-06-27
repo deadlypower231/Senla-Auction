@@ -34,8 +34,11 @@ public class LotService implements ILotService {
         entity.setStatus(Status.INACTIVE);
         entity.setPrice(0.0);
         Lot savedLot = this.lotRepository.save(entity);
-//        currentUser.setLots(Collections.singletonList(savedLot));
-        currentUser.getLots().add(savedLot);
+        if (currentUser.getLots() == null){
+            currentUser.setLots(Collections.singletonList(savedLot.getId().toString()));
+        }else {
+            currentUser.getLots().add(savedLot.getId().toString());
+        }
         this.userRepository.save(currentUser);
         return LotMapper.mapLotDto(savedLot);
     }
