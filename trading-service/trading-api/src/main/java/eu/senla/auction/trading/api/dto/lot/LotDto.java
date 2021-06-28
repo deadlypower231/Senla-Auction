@@ -20,7 +20,7 @@ public class LotDto {
     private String dateStart;
     private String dateEnd;
     private Double price;
-    private UserDto userWin;
+    private ObjectId userWin;
     private List<BetDto> bets;
 
 }

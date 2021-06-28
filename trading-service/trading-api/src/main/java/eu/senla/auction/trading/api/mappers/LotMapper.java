@@ -30,7 +30,7 @@ public class LotMapper {
                 .description(source.getDescription())
                 .dateStart(source.getDateStart().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME))
                 .dateEnd(source.getDateEnd().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME))
-                .userWin(Optional.ofNullable(UserMapper.mapUserDto(source.getUserWin())).orElse(null))
+                .userWin(source.getUserWin())
                 .build();
     }
 
