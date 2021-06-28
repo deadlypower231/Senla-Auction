@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="FrameworkDetectionExcludesConfiguration">
+    <file type="web" url="file://$PROJECT_DIR$/chat-service/chat-rest" />
     <file type="web" url="file://$PROJECT_DIR$/eureka-server" />
     <file type="web" url="file://$PROJECT_DIR$/payment-service/payment-rest" />
     <file type="web" url="file://$PROJECT_DIR$/trading-service/trading-rest" />
@@ -13,6 +14,7 @@
     </option>
     <option name="ignoredFiles">
       <set>
+        <option value="$PROJECT_DIR$/chat-rest/pom.xml" />
         <option value="$PROJECT_DIR$/eureka-server/pom.xml" />
       </set>
     </option>

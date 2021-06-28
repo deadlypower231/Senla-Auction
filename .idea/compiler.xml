@@ -8,22 +8,29 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="trading-rest" />
-        <module name="trading-api" />
         <module name="payment-rest" />
-        <module name="payment-services" />
+        <module name="chat-rest" />
         <module name="bank-entity" />
-        <module name="chat-service" />
-        <module name="trading-services" />
-        <module name="trading-entity" />
+        <module name="chat-entity" />
         <module name="payment-api" />
         <module name="payment-entity" />
+        <module name="chat-services" />
+        <module name="trading-api" />
+        <module name="payment-services" />
+        <module name="trading-services" />
+        <module name="trading-entity" />
+        <module name="chat-api" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="Auction" target="8" />
       <module name="bank-entity" target="8" />
       <module name="bank-service" target="8" />
+      <module name="chat-api" target="8" />
+      <module name="chat-entity" target="8" />
+      <module name="chat-rest" target="8" />
       <module name="chat-service" target="8" />
+      <module name="chat-services" target="8" />
       <module name="eureka-server" target="8" />
       <module name="payment-api" target="8" />
       <module name="payment-entity" target="8" />

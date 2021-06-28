@@ -20,12 +20,10 @@ public class ScheduledTask implements IScheduledTask {
 
     private final LotRepository lotRepository;
     private final BetRepository betRepository;
-    private final UserRepository userRepository;
 
-    public ScheduledTask(LotRepository lotRepository, BetRepository betRepository, UserRepository userRepository) {
+    public ScheduledTask(LotRepository lotRepository, BetRepository betRepository) {
         this.lotRepository = lotRepository;
         this.betRepository = betRepository;
-        this.userRepository = userRepository;
     }
 
     //    @Scheduled(cron = "0 * * * * *")
@@ -39,7 +37,7 @@ public class ScheduledTask implements IScheduledTask {
         }
         this.lotRepository.saveAll(lots);
     }
-
+//todo optional
     @Scheduled(fixedRate = 10000)
     @Override
     public void checkEndLots() {
