@@ -77,10 +77,7 @@ public class UserMapper {
         }
         return BetDto.builder()
                 .price(source.getPrice())
-                .lotDto(mapLotDto(source.getLot()))
-                .date(source.getDate())
                 .status(source.getStatus())
-                .userDto(mapUserDto(source.getUser()))
                 .build();
     }
 

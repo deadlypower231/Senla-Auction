@@ -32,6 +32,6 @@ public class User extends AEntity<ObjectId> {
     private Double balance;
     private Set<Role> roles;
     private List<ObjectId> lots;
-    private List<Bet> bets;
+    private List<ObjectId> bets;
 
 }

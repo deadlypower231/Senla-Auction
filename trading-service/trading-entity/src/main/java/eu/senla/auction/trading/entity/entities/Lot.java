@@ -28,7 +28,7 @@ public class Lot extends AEntity<ObjectId> {
     private LocalDateTime dateEnd;
     private Double price;
     private User userWin;
-    private List<Bet> bets;
+    private List<ObjectId> bets;
     private Status status;
 
 

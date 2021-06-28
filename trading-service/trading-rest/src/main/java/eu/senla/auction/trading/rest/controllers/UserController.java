@@ -31,7 +31,6 @@ public class UserController {
         return userService.findAllUsers();
     }
 
-    //todo
     @GetMapping
     public Map<String, Object> homePage() {
         Map<String, Object> result = new HashMap<>();
