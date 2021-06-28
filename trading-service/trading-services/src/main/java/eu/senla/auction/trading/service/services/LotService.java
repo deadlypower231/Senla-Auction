@@ -62,9 +62,7 @@ public class LotService implements ILotService {
     public List<LotDto> getAllLots(Status status) {
         Iterable<Lot> lots = this.lotRepository.findAllByStatus(status);
         List<Lot> result = new ArrayList<>();
-        for (Lot x : lots) {
-                result.add(x);
-        }
+        lots.forEach(result::add);
         return LotMapper.mapLotsDto(result);
     }
 

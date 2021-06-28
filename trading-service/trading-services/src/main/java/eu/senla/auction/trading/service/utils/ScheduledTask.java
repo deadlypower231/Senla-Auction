@@ -40,8 +40,6 @@ public class ScheduledTask implements IScheduledTask {
         this.lotRepository.saveAll(lots);
     }
 
-    //todo
-
     @Scheduled(fixedRate = 10000)
     @Override
     public void checkEndLots() {

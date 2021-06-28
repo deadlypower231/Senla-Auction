@@ -21,8 +21,7 @@ public class BetController {
 
     @PostMapping("/addBet")
     public Boolean addBet(@RequestBody CreateBetDto betDto) {
-        boolean s = this.betService.addBet(betDto);
-        return null;
+        return this.betService.addBet(betDto);
     }
 
 }

@@ -14,13 +14,13 @@ import java.util.List;
 @Builder
 public class LotDto {
 
-    private ObjectId id;
+    private String id;
     private String name;
     private String description;
     private String dateStart;
     private String dateEnd;
     private Double price;
-    private ObjectId userWin;
-    private List<BetDto> bets;
+    private String userWin;
+    private List<String> bets;
 
 }
