@@ -28,7 +28,7 @@ public class LotMapper {
 
     public LotDto mapLotDto(Lot source) {
         return LotDto.builder()
-                .id(String.valueOf(source.getId()))
+                .id(source.getId().toString())
                 .name(source.getName())
                 .price(source.getPrice())
                 .description(source.getDescription())

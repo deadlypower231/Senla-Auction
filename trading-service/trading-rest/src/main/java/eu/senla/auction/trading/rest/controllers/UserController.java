@@ -4,6 +4,7 @@ import eu.senla.auction.trading.api.dto.payment.BalanceDto;
 import eu.senla.auction.trading.api.dto.user.CreateUserDto;
 import eu.senla.auction.trading.api.dto.user.HomePageDto;
 import eu.senla.auction.trading.api.dto.user.UserDto;
+import eu.senla.auction.trading.api.services.IBetService;
 import eu.senla.auction.trading.api.services.ILotService;
 import eu.senla.auction.trading.api.services.IUserService;
 import eu.senla.auction.trading.entity.enums.Status;
@@ -19,10 +20,12 @@ public class UserController {
 
     private final IUserService userService;
     private final ILotService lotService;
+    private final IBetService betService;
 
-    public UserController(IUserService userService, ILotService lotService) {
+    public UserController(IUserService userService, ILotService lotService, IBetService betService) {
         this.userService = userService;
         this.lotService = lotService;
+        this.betService = betService;
     }
 
     //test method
@@ -47,6 +50,9 @@ public class UserController {
         result.put("activeLots", this.lotService.getLotsCurrentUser(Status.ACTIVE));
         result.put("inactiveLots", this.lotService.getLotsCurrentUser(Status.INACTIVE));
         result.put("completedLots", this.lotService.getLotsCurrentUser(Status.COMPLETED));
+        result.put("activeBets", this.betService.getBetsCurrentUser(Status.ACTIVE));
+        result.put("inactiveBets", this.betService.getBetsCurrentUser(Status.INACTIVE));
+        result.put("winBets", this.betService.getBetsCurrentUser(Status.WINNER));
         return result;
     }
 

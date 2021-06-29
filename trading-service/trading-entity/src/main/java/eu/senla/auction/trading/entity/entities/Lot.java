@@ -22,6 +22,7 @@ import java.util.List;
 @Document(collection = "lot")
 public class Lot extends AEntity<ObjectId> {
 
+    private ObjectId userId;
     private String name;
     private String description;
     private LocalDateTime dateStart;
@@ -30,6 +31,7 @@ public class Lot extends AEntity<ObjectId> {
     private ObjectId userWin;
     private List<ObjectId> bets;
     private Status status;
+    private ObjectId chat;
 
 
 }

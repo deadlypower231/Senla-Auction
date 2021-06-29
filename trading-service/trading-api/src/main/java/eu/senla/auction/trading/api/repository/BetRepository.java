@@ -10,4 +10,5 @@ public interface BetRepository extends MongoRepository<Bet, ObjectId> {
 
     List<Bet> findAllByIdOrderByPrice(List<ObjectId> ids);
 
+
 }

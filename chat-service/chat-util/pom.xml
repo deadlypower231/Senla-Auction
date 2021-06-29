@@ -3,21 +3,13 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>Auction</artifactId>
+        <artifactId>chat-service</artifactId>
         <groupId>eu.senla.auction</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>chat-service</artifactId>
-    <packaging>pom</packaging>
-    <modules>
-        <module>chat-entity</module>
-        <module>chat-api</module>
-        <module>chat-rest</module>
-        <module>chat-services</module>
-        <module>chat-util</module>
-    </modules>
+    <artifactId>chat-util</artifactId>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>

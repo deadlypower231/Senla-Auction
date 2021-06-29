@@ -5,6 +5,8 @@ import eu.senla.auction.trading.api.dto.user.UserDto;
 import eu.senla.auction.trading.entity.enums.Status;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -12,10 +14,9 @@ import lombok.*;
 @Builder
 public class BetDto {
 
-    private UserDto userDto;
+    private String userId;
     private Double price;
     private String dateTime;
-    private LotDto lotDto;
-    private Status status;
+    private String lotId;
 
 }

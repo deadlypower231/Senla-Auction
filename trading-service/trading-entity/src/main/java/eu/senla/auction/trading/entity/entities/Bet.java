@@ -24,5 +24,6 @@ public class Bet extends AEntity<ObjectId> {
     private LocalDateTime dateTime;
     private ObjectId lot;
     private Status status;
+    private ObjectId chat;
 
 }

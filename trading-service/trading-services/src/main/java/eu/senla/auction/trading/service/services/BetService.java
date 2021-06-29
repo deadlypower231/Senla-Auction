@@ -1,5 +1,6 @@
 package eu.senla.auction.trading.service.services;
 
+import eu.senla.auction.trading.api.dto.bet.BetDto;
 import eu.senla.auction.trading.api.dto.bet.CreateBetDto;
 import eu.senla.auction.trading.api.mappers.BetMapper;
 import eu.senla.auction.trading.api.repository.BetRepository;
@@ -14,6 +15,7 @@ import eu.senla.auction.trading.entity.enums.Status;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -67,4 +69,18 @@ public class BetService implements IBetService {
             return true;
     }
 
+    @Override
+    public List<BetDto> getBetsCurrentUser(Status status) {
+        User currentUser = this.userRepository.findByEmail(this.securityService.findLoggedInUser());
+        List<Bet> result = new ArrayList<>();
+        if (currentUser.getBets() != null) {
+            Iterable<Bet> bets = this.betRepository.findAllById(currentUser.getBets());
+            for (Bet x : bets) {
+                if (x.getStatus().equals(status)) {
+                    result.add(x);
+                }
+            }
+        }
+        return BetMapper.mapBetsDto(result);
+    }
 }

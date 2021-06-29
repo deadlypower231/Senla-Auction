@@ -18,7 +18,10 @@ import java.util.List;
 @Document(collection = "chat")
 public class Chat extends AEntity<ObjectId> {
 
-    private ObjectId lotId;
-    private List<String> messages;
+    private String lotId;
+    private String dealerEmail;
+    private String buyerEmail;
+    private List<String> dealerMessages;
+    private List<String> buyerMessages;
 
 }

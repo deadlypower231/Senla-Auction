@@ -33,6 +33,7 @@ public class LotService implements ILotService {
     public LotDto addLot(CreateLotDto lotDto) {
         User currentUser = this.userRepository.findByEmail(this.securityService.findLoggedInUser());
         Lot entity = LotMapper.mapCreateLot(lotDto);
+        entity.setUserId(currentUser.getId());
         entity.setStatus(Status.INACTIVE);
         entity.setPrice(0.0);
         Lot savedLot = this.lotRepository.save(entity);
@@ -48,13 +49,16 @@ public class LotService implements ILotService {
     @Override
     public List<LotDto> getLotsCurrentUser(Status status) {
         User currentUser = this.userRepository.findByEmail(this.securityService.findLoggedInUser());
-        Iterable<Lot> lots = this.lotRepository.findAllById(currentUser.getLots());
         List<Lot> result = new ArrayList<>();
-        for (Lot x : lots) {
-            if (x.getStatus().equals(status)) {
-                result.add(x);
+        if (currentUser.getLots() != null) {
+            Iterable<Lot> lots = this.lotRepository.findAllById(currentUser.getLots());
+            for (Lot x : lots) {
+                if (x.getStatus().equals(status)) {
+                    result.add(x);
+                }
             }
         }
+
         return LotMapper.mapLotsDto(result);
     }
 

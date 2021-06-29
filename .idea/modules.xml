@@ -9,6 +9,7 @@
       <module fileurl="file://$PROJECT_DIR$/chat-service/chat-rest/chat-rest.iml" filepath="$PROJECT_DIR$/chat-service/chat-rest/chat-rest.iml" />
       <module fileurl="file://$PROJECT_DIR$/chat-service/chat-service.iml" filepath="$PROJECT_DIR$/chat-service/chat-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/chat-service/chat-services/chat-services.iml" filepath="$PROJECT_DIR$/chat-service/chat-services/chat-services.iml" />
+      <module fileurl="file://$PROJECT_DIR$/chat-service/chat-util/chat-util.iml" filepath="$PROJECT_DIR$/chat-service/chat-util/chat-util.iml" />
       <module fileurl="file://$PROJECT_DIR$/payment-service/payment-api/payment-api.iml" filepath="$PROJECT_DIR$/payment-service/payment-api/payment-api.iml" />
       <module fileurl="file://$PROJECT_DIR$/payment-service/payment-entity/payment-entity.iml" filepath="$PROJECT_DIR$/payment-service/payment-entity/payment-entity.iml" />
       <module fileurl="file://$PROJECT_DIR$/payment-service/payment-rest/payment-rest.iml" filepath="$PROJECT_DIR$/payment-service/payment-rest/payment-rest.iml" />
