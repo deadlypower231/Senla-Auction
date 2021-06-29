@@ -1,22 +1,30 @@
 package eu.senla.auction.trading.rest.controllers;
 
-import eu.senla.auction.trading.api.dto.bet.BetDto;
 import eu.senla.auction.trading.api.dto.bet.CreateBetDto;
 import eu.senla.auction.trading.api.services.IBetService;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import eu.senla.auction.trading.api.utils.IScheduledTask;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/bet")
 public class BetController {
 
     private final IBetService betService;
+    private final IScheduledTask scheduledTask;
 
-    public BetController(IBetService betService) {
+    public BetController(IBetService betService, IScheduledTask scheduledTask) {
         this.betService = betService;
+        this.scheduledTask = scheduledTask;
+    }
+
+    @GetMapping("/checkStartBet")
+    public void checkStart(){
+        this.scheduledTask.checkStartLots();
+    }
+
+    @GetMapping("/checkEndBet")
+    public void checkEnd(){
+        this.scheduledTask.checkEndLots();
     }
 
     @PostMapping("/addBet")

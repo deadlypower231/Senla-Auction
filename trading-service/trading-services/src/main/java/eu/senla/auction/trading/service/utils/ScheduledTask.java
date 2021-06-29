@@ -8,7 +8,6 @@ import eu.senla.auction.trading.api.repository.UserRepository;
 import eu.senla.auction.trading.api.utils.IScheduledTask;
 import eu.senla.auction.trading.entity.entities.Bet;
 import eu.senla.auction.trading.entity.entities.Lot;
-import eu.senla.auction.trading.entity.entities.User;
 import eu.senla.auction.trading.entity.enums.Status;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -37,8 +36,7 @@ public class ScheduledTask implements IScheduledTask {
         this.restTemplate = restTemplate;
     }
 
-    //    @Scheduled(cron = "0 * * * * *")
-    @Scheduled(fixedRate = 10000)
+    @Scheduled(cron = "0 0 * * * *")
     @Override
     public void checkStartLots() {
         List<Lot> lots = this.lotRepository.findAllByStatus(Status.INACTIVE).stream()
@@ -49,8 +47,7 @@ public class ScheduledTask implements IScheduledTask {
         this.lotRepository.saveAll(lots);
     }
 
-    //todo optional
-    @Scheduled(fixedRate = 30000)
+    @Scheduled(cron = "0 0 * * * *")
     @Override
     public void checkEndLots() {
         List<Lot> lots = this.lotRepository.findAllByStatus(Status.ACTIVE).stream()
@@ -67,8 +64,10 @@ public class ScheduledTask implements IScheduledTask {
                 x.setUserWin(winBet.getUser());
                 winBet.setStatus(Status.WINNER);
                 ChatDto chatDto = createChatDto(x);
-                x.setChat(chatDto.getId());
-                winBet.setChat(chatDto.getId());
+                if (chatDto != null) {
+                    x.setChat(chatDto.getId());
+                    winBet.setChat(chatDto.getId());
+                }
                 this.betRepository.save(winBet);
             }
 
