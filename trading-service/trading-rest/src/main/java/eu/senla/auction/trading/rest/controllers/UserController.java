@@ -38,8 +38,7 @@ public class UserController {
     public Map<String, Object> homePage() {
         Map<String, Object> result = new HashMap<>();
         result.put("currentUser", this.userService.getCurrentUser());
-        result.put("activeLots", this.lotService.getAllLots(Status.ACTIVE));
-        result.put("futureLots", this.lotService.getAllLots(Status.INACTIVE));
+        result.put("allLots", this.lotService.getAllLots(Status.ACTIVE));
         result.put("completedLots", this.lotService.getAllLots(Status.COMPLETED));
         return result;
     }

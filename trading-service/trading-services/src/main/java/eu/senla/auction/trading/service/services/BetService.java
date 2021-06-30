@@ -1,5 +1,6 @@
 package eu.senla.auction.trading.service.services;
 
+import eu.senla.auction.trading.api.dto.bet.BetDto;
 import eu.senla.auction.trading.api.dto.bet.CreateBetDto;
 import eu.senla.auction.trading.api.mappers.BetMapper;
 import eu.senla.auction.trading.api.repository.BetRepository;
@@ -39,7 +40,7 @@ public class BetService implements IBetService {
         User currentUser = this.userRepository.findByEmail(this.securityService.findLoggedInUser());
         Optional<Lot> lot = this.lotRepository.findById(createBetDto.getLot());
         Lot lot1 = lot.get();
-        if (lot1.getPrice() >= createBetDto.getPrice()) {
+        if (lot1.getPrice() >= createBetDto.getPrice()){
             return false;
         }
         if (lot1.getBets() != null) {
@@ -52,24 +53,24 @@ public class BetService implements IBetService {
         bet.setDateTime(LocalDateTime.now());
         bet.setStatus(Status.ACTIVE);
         Bet savedBet = this.betRepository.save(bet);
-        if (currentUser.getBets() == null) {
+        if (currentUser.getBets() == null){
             currentUser.setBets(Collections.singletonList(savedBet.getId()));
-        } else {
+        }else {
             currentUser.getBets().add(savedBet.getId());
         }
         this.userRepository.save(currentUser);
         lot1.setPrice(createBetDto.getPrice());
-        if (lot1.getBets() == null) {
+        if (lot1.getBets() == null){
             lot1.setBets(Collections.singletonList(savedBet.getId()));
-        } else {
+        }else {
             lot1.getBets().add(savedBet.getId());
         }
         this.lotRepository.save(lot1);
-        return true;
+            return true;
     }
 
     @Override
-    public List<?> getBetsCurrentUser(Status status) {
+    public List<BetDto> getBetsCurrentUser(Status status) {
         User currentUser = this.userRepository.findByEmail(this.securityService.findLoggedInUser());
         List<Bet> result = new ArrayList<>();
         if (currentUser.getBets() != null) {
@@ -80,12 +81,6 @@ public class BetService implements IBetService {
                 }
             }
         }
-        if (status.equals(Status.WINNER)) {
-            return BetMapper.mapBetsWinnerDto(result);
-        } else if (status.equals(Status.INACTIVE)) {
-            return BetMapper.mapBetsInactiveDto(result);
-        }else {
-            return BetMapper.mapBetsActiveDto(result);
-        }
+        return BetMapper.mapBetsDto(result);
     }
 }
