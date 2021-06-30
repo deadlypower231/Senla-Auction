@@ -9,8 +9,12 @@ import eu.senla.auction.trading.api.utils.IScheduledTask;
 import eu.senla.auction.trading.entity.entities.Bet;
 import eu.senla.auction.trading.entity.entities.Lot;
 import eu.senla.auction.trading.entity.enums.Status;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.TaskScheduler;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
@@ -20,6 +24,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
+@EnableScheduling
 public class ScheduledTask implements IScheduledTask {
 
     private static String CHAT_SERVICE = "http://localhost:8082/chat";
@@ -36,6 +41,13 @@ public class ScheduledTask implements IScheduledTask {
         this.restTemplate = restTemplate;
     }
 
+    @Bean
+    public TaskScheduler taskScheduler() {
+        ThreadPoolTaskScheduler taskScheduler = new ThreadPoolTaskScheduler();
+        taskScheduler.setPoolSize(50);
+        return taskScheduler;
+    }
+
     @Scheduled(cron = "0 0 * * * *")
     @Override
     public void checkStartLots() {
@@ -47,7 +59,7 @@ public class ScheduledTask implements IScheduledTask {
         this.lotRepository.saveAll(lots);
     }
 
-    @Scheduled(cron = "0 0 * * * *")
+    @Scheduled(cron = "0 */1 * * * *")
     @Override
     public void checkEndLots() {
         List<Lot> lots = this.lotRepository.findAllByStatus(Status.ACTIVE).stream()

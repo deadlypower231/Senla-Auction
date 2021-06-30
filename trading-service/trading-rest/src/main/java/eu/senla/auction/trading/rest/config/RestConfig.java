@@ -8,6 +8,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = {"eu.senla.auction.trading.rest.controllers"})
+@ComponentScan(basePackages = {"eu.senla.auction.trading.service.config"})
 public class RestConfig implements WebMvcConfigurer {
 }

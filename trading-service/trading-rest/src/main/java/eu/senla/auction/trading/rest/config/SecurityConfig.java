@@ -14,7 +14,7 @@ import org.springframework.web.client.RestTemplate;
 
 @Configuration
 @EnableWebSecurity
-@ComponentScan({"eu.senla.auction.trading.rest.config", "eu.senla.auction.trading.service"})
+@ComponentScan
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final PasswordEncoder passwordEncoder;

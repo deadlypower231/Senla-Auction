@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/roles")
-@ComponentScan("eu.senla.auction.trading.service.services")
 public class RoleController {
 
     private final IRoleService roleService;

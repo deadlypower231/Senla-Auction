@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/auth")
-@ComponentScan("eu.senla.auction.trading.rest")
 public class AuthController {
 
     private final IUserService userService;
