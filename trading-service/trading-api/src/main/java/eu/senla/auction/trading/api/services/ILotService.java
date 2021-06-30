@@ -10,8 +10,8 @@ public interface ILotService {
 
     LotDto addLot(CreateLotDto lotDto);
 
-    List<LotDto> getLotsCurrentUser(Status status);
+    List<?> getLotsCurrentUser(Status status);
 
-    List<LotDto> getAllLots(Status status);
+    List<?> getAllLots(Status status);
 
 }

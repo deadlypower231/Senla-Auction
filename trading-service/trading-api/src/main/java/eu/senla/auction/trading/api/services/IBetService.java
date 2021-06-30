@@ -12,6 +12,6 @@ public interface IBetService {
 
     Boolean addBet(CreateBetDto createBetDto);
 
-    List<BetDto> getBetsCurrentUser(Status status);
+    List<?> getBetsCurrentUser(Status status);
 
 }

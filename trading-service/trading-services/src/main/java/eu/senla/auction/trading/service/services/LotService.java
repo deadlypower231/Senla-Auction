@@ -47,7 +47,7 @@ public class LotService implements ILotService {
     }
 
     @Override
-    public List<LotDto> getLotsCurrentUser(Status status) {
+    public List<?> getLotsCurrentUser(Status status) {
         User currentUser = this.userRepository.findByEmail(this.securityService.findLoggedInUser());
         List<Lot> result = new ArrayList<>();
         if (currentUser.getLots() != null) {
@@ -58,16 +58,27 @@ public class LotService implements ILotService {
                 }
             }
         }
-
-        return LotMapper.mapLotsDto(result);
+        if (status.equals(Status.ACTIVE)) {
+            return LotMapper.mapLotsActiveDto(result);
+        } else if (status.equals(Status.INACTIVE)) {
+            return LotMapper.mapLotsInactiveDto(result);
+        } else {
+            return LotMapper.mapLotsCompletedCurrentUserDto(result);
+        }
     }
 
     @Override
-    public List<LotDto> getAllLots(Status status) {
+    public List<?> getAllLots(Status status) {
         Iterable<Lot> lots = this.lotRepository.findAllByStatus(status);
         List<Lot> result = new ArrayList<>();
         lots.forEach(result::add);
-        return LotMapper.mapLotsDto(result);
+        if (status.equals(Status.INACTIVE)) {
+            return LotMapper.mapLotsInactiveDto(result);
+        } else if (status.equals(Status.COMPLETED)) {
+            return LotMapper.mapLotsCompletedDto(result);
+        } else {
+            return LotMapper.mapLotsActiveDto(result);
+        }
     }
 
 }
