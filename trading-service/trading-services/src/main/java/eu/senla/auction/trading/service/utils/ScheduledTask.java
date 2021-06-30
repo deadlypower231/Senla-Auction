@@ -59,7 +59,7 @@ public class ScheduledTask implements IScheduledTask {
         this.lotRepository.saveAll(lots);
     }
 
-    @Scheduled(cron = "0 */1 * * * *")
+    @Scheduled(cron = "0 0 * * * *")
     @Override
     public void checkEndLots() {
         List<Lot> lots = this.lotRepository.findAllByStatus(Status.ACTIVE).stream()
