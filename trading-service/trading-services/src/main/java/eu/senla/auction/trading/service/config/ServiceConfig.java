@@ -10,7 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.client.RestTemplate;
 
 @Configuration
-@ComponentScan({"eu.senla.auction.trading.service.services", "eu.senla.auction.trading.service.security"})
+@ComponentScan({"eu.senla.auction.trading.service"})
 public class ServiceConfig {
 
     @Bean

@@ -17,12 +17,12 @@ public class BetController {
         this.scheduledTask = scheduledTask;
     }
 
-    @GetMapping("/checkStartBet")
+    @GetMapping("/checkStartLot")
     public void checkStart(){
         this.scheduledTask.checkStartLots();
     }
 
-    @GetMapping("/checkEndBet")
+    @GetMapping("/checkEndLot")
     public void checkEnd(){
         this.scheduledTask.checkEndLots();
     }

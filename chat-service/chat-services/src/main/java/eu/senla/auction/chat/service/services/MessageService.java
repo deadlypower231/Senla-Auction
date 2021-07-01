@@ -34,6 +34,7 @@ public class MessageService implements IMessageService {
     public MessagesDto sendMessage(SendMessageDto sendMessageDto) {
         Message message = new Message();
         message.setStatus(Status.UNREAD);
+        message.setNotificationStatus(Status.UNSENT);
         message.setText(sendMessageDto.getText());
         message.setTimePublication(LocalDateTime.now());
         Message savedMessage = this.messageRepository.save(message);

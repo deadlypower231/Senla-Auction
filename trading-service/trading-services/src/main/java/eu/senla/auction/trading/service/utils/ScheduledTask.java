@@ -19,6 +19,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -68,7 +69,7 @@ public class ScheduledTask implements IScheduledTask {
             x.setStatus(Status.COMPLETED);
             if (x.getBets() != null) {
                 List<Bet> bets = (List<Bet>) this.betRepository.findAllById(x.getBets());
-                Optional<Bet> optionalBet = bets.stream().max((i, j) -> i.getPrice().compareTo(j.getPrice()));
+                Optional<Bet> optionalBet = bets.stream().max(Comparator.comparing(Bet::getPrice));
                 Bet winBet = new Bet();
                 if (optionalBet.isPresent()) {
                     winBet = optionalBet.get();

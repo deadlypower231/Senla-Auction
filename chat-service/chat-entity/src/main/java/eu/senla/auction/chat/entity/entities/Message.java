@@ -22,5 +22,6 @@ public class Message extends AEntity<ObjectId> {
     private String text;
     private LocalDateTime timePublication;
     private Status status;
+    private Status notificationStatus;
 
 }
