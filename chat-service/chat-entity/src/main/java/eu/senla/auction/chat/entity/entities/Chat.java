@@ -21,7 +21,7 @@ public class Chat extends AEntity<ObjectId> {
     private String lotId;
     private String dealerEmail;
     private String buyerEmail;
-    private List<String> dealerMessages;
-    private List<String> buyerMessages;
+    private List<ObjectId> dealerMessages;
+    private List<ObjectId> buyerMessages;
 
 }

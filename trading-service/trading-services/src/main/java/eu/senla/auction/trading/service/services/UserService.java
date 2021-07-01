@@ -1,5 +1,9 @@
 package eu.senla.auction.trading.service.services;
 
+import eu.senla.auction.trading.api.dto.chat.ChatMessageDto;
+import eu.senla.auction.trading.api.dto.chat.ChatViewDto;
+import eu.senla.auction.trading.api.dto.chat.MessagesDto;
+import eu.senla.auction.trading.api.dto.chat.SendMessageDto;
 import eu.senla.auction.trading.api.dto.payment.BalanceDto;
 import eu.senla.auction.trading.api.dto.payment.BankDto;
 import eu.senla.auction.trading.api.dto.user.CreateUserDto;
@@ -19,16 +23,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
+import java.time.LocalDateTime;
+import java.util.*;
 
 @Service
 @ComponentScan("eu.senla.auction.trading.rest")
 public class UserService implements IUserService {
 
     private static final String BANK_SERVICE = "http://localhost:8081/bank";
+    private static final String CHAT_SERVICE = "http://localhost:8082";
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
@@ -42,15 +45,6 @@ public class UserService implements IUserService {
         this.passwordEncoder = passwordEncoder;
         this.restTemplate = restTemplate;
         this.securityService = securityService;
-    }
-
-    //test
-    @Override
-    public HomePageDto updUser(CreateUserDto createUserDto) {
-        User user = this.userRepository.findByEmail(this.securityService.findLoggedInUser());
-        user.setLastName(createUserDto.getLastName());
-
-        return UserMapper.mapHomePageDto(this.userRepository.save(user));
     }
 
     @Override
@@ -89,10 +83,43 @@ public class UserService implements IUserService {
         return restTemplate.postForObject(BANK_SERVICE + "/addBalance", balanceDto, Boolean.class);
     }
 
+    //todo rewrite to 1 method
     @Override
-    public List<UserDto> findAllUsers() {
-        return UserMapper.mapUsersDto(userRepository.findAll());
+    public ChatViewDto sendMessage(SendMessageDto sendMessageDto) {
+        sendMessageDto.setEmail(this.securityService.findLoggedInUser());
+        ResponseEntity<MessagesDto> response = restTemplate.postForEntity(CHAT_SERVICE + "/message/add",
+                sendMessageDto, MessagesDto.class);
+        ChatViewDto chatViewDto = new ChatViewDto();
+        if (response.getBody() != null) {
+            chatViewDto.setId(response.getBody().getChatId().toString());
+            chatViewDto.setMessages(buildMessagesForChat(response.getBody()));
+        }
+        return chatViewDto;
     }
 
+    @Override
+    public ChatViewDto chat(ChatMessageDto chatMessageDto) {
+        chatMessageDto.setEmail(this.securityService.findLoggedInUser());
+        ResponseEntity<MessagesDto> response = restTemplate.postForEntity(CHAT_SERVICE + "/message/chatMessages",
+                chatMessageDto, MessagesDto.class);
+        ChatViewDto chatViewDto = new ChatViewDto();
+        if (response.getBody() != null) {
+            chatViewDto.setId(response.getBody().getChatId().toString());
+            chatViewDto.setMessages(buildMessagesForChat(response.getBody()));
+        }
+        return chatViewDto;
+    }
 
+    private Map<LocalDateTime, String> buildMessagesForChat(MessagesDto messagesDto) {
+        User buyer = this.userRepository.findByEmail(messagesDto.getBuyerEmail());
+        User dealer = this.userRepository.findByEmail(messagesDto.getDealerEmail());
+        Map<LocalDateTime, String> messages = new TreeMap<>();
+        if (messagesDto.getDealerMessage() != null) {
+            messagesDto.getDealerMessage().forEach((key, value) -> messages.put(key, dealer.getFirstName() + ": " + value));
+        }
+        if (messagesDto.getBuyerMessage() != null) {
+            messagesDto.getBuyerMessage().forEach((key, value) -> messages.put(key, buyer.getFirstName() + ": " + value));
+        }
+        return messages;
+    }
 }

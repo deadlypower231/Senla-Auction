@@ -1,9 +1,9 @@
 package eu.senla.auction.trading.rest.controllers;
 
+import eu.senla.auction.trading.api.dto.chat.ChatMessageDto;
+import eu.senla.auction.trading.api.dto.chat.ChatViewDto;
+import eu.senla.auction.trading.api.dto.chat.SendMessageDto;
 import eu.senla.auction.trading.api.dto.payment.BalanceDto;
-import eu.senla.auction.trading.api.dto.user.CreateUserDto;
-import eu.senla.auction.trading.api.dto.user.HomePageDto;
-import eu.senla.auction.trading.api.dto.user.UserDto;
 import eu.senla.auction.trading.api.services.IBetService;
 import eu.senla.auction.trading.api.services.ILotService;
 import eu.senla.auction.trading.api.services.IUserService;
@@ -11,7 +11,6 @@ import eu.senla.auction.trading.entity.enums.Status;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -28,23 +27,18 @@ public class UserController {
         this.betService = betService;
     }
 
-    //test method
-    @GetMapping("/getAll")
-    public List<UserDto> getAll() {
-        return userService.findAllUsers();
-    }
-
     @GetMapping
     public Map<String, Object> homePage() {
         Map<String, Object> result = new HashMap<>();
         result.put("currentUser", this.userService.getCurrentUser());
-        result.put("allLots", this.lotService.getAllLots(Status.ACTIVE));
+        result.put("activeLots", this.lotService.getAllLots(Status.ACTIVE));
+        result.put("futureLots", this.lotService.getAllLots(Status.INACTIVE));
         result.put("completedLots", this.lotService.getAllLots(Status.COMPLETED));
         return result;
     }
 
     @GetMapping("/personalCabinet")
-    public Map<String, Object> personalCabinet(){
+    public Map<String, Object> personalCabinet() {
         Map<String, Object> result = new HashMap<>();
         result.put("currentUser", this.userService.getCurrentUser());
         result.put("activeLots", this.lotService.getLotsCurrentUser(Status.ACTIVE));
@@ -61,9 +55,13 @@ public class UserController {
         return this.userService.addBalance(balanceDto);
     }
 
-    @PatchMapping("/update")
-    public HomePageDto updUser(@RequestBody CreateUserDto userDto) {
-        return this.userService.updUser(userDto);
+    @GetMapping("/chat")
+    public ChatViewDto chat(@RequestBody ChatMessageDto chatMessageDto) {
+        return this.userService.chat(chatMessageDto);
     }
 
+    @PostMapping("/sendMessage")
+    public ChatViewDto sendMessage(@RequestBody SendMessageDto sendMessageDto) {
+        return this.userService.sendMessage(sendMessageDto);
+    }
 }

@@ -5,6 +5,8 @@ import eu.senla.auction.chat.api.dto.CreateChatDto;
 import eu.senla.auction.chat.entity.entities.Chat;
 import lombok.experimental.UtilityClass;
 
+import java.util.stream.Collectors;
+
 @UtilityClass
 public class ChatMapper {
 
@@ -22,8 +24,8 @@ public class ChatMapper {
                 .lotId(source.getLotId())
                 .buyerEmail(source.getBuyerEmail())
                 .dealerEmail(source.getDealerEmail())
-                .buyerMessages(source.getBuyerMessages())
-                .dealerMessages(source.getDealerMessages())
+                .buyerMessages(source.getBuyerMessages().stream().map(String::valueOf).collect(Collectors.toList()))
+                .dealerMessages(source.getDealerMessages().stream().map(String::valueOf).collect(Collectors.toList()))
                 .build();
     }
 
