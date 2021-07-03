@@ -9,6 +9,8 @@ import java.util.List;
 
 public interface LotRepository extends MongoRepository<Lot, ObjectId> {
 
+    Lot findById(String id);
+
     List<Lot> findAllByStatus(Status status);
 
 }

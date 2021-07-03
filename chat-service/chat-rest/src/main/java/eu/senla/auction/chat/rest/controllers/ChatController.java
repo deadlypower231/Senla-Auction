@@ -1,6 +1,7 @@
 package eu.senla.auction.chat.rest.controllers;
 
 import eu.senla.auction.chat.api.dto.ChatDto;
+import eu.senla.auction.chat.api.dto.ChatsDto;
 import eu.senla.auction.chat.api.dto.CreateChatDto;
 import eu.senla.auction.chat.api.services.IChatService;
 import org.springframework.context.annotation.ComponentScan;
@@ -17,9 +18,9 @@ public class ChatController {
         this.chatService = chatService;
     }
 
-    @GetMapping
-    public String test() {
-        return "test";
+    @GetMapping("/getChats{email}")
+    public ChatsDto getChats(@PathVariable String email) {
+        return this.chatService.getChats(email);
     }
 
     @PostMapping("/createChat")

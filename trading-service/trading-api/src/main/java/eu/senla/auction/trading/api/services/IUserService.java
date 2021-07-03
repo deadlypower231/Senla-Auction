@@ -1,5 +1,6 @@
 package eu.senla.auction.trading.api.services;
 
+import eu.senla.auction.trading.api.dto.chat.ChatDto;
 import eu.senla.auction.trading.api.dto.chat.ChatMessageDto;
 import eu.senla.auction.trading.api.dto.chat.ChatViewDto;
 import eu.senla.auction.trading.api.dto.chat.SendMessageDto;
@@ -21,5 +22,7 @@ public interface IUserService {
     ChatViewDto chat(ChatMessageDto chatMessageDto);
 
     ChatViewDto sendMessage(SendMessageDto sendMessageDto);
+
+    List<String> getChats();
 
 }

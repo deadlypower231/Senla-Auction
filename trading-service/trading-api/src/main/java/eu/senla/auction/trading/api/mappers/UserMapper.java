@@ -12,28 +12,35 @@ import java.util.stream.Collectors;
 public class UserMapper {
 
     public UserDto mapUserDto(User source) {
-        if (source == null) {
-            return null;
-        }
-        return UserDto.builder()
+        return (source != null) ? UserDto.builder()
                 .id(String.valueOf(source.getId()))
                 .firstName(source.getFirstName())
                 .lastName(source.getLastName())
                 .email(source.getEmail())
                 .balance(source.getBalance())
                 .birthday(source.getBirthday())
-                .password(source.getPassword())
-                .build();
+                .build() : null;
     }
 
     public HomePageDto mapHomePageDto(User source) {
         return HomePageDto.builder()
+                .id(source.getId().toString())
                 .firstName(source.getFirstName())
                 .lastName(source.getLastName())
                 .balance(source.getBalance())
                 .birthday(source.getBirthday())
                 .email(source.getEmail())
                 .build();
+    }
+
+    public User mapUser(HomePageDto source) {
+        return (source != null) ? User.builder()
+                .firstName(source.getFirstName())
+                .lastName(source.getLastName())
+                .email(source.getEmail())
+                .birthday(source.getBirthday())
+                .balance(source.getBalance())
+                .build() : null;
     }
 
     public List<UserDto> mapUsersDto(List<User> source) {

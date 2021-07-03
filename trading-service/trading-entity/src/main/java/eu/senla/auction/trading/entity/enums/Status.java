@@ -2,6 +2,6 @@ package eu.senla.auction.trading.entity.enums;
 
 public enum Status {
 
-    INACTIVE, ACTIVE, COMPLETED, WINNER
+    INACTIVE, ACTIVE, COMPLETED, WINNER, PAID, UNPAID
 
 }

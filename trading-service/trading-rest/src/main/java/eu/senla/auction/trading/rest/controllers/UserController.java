@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 @RestController
 @RequestMapping("/users")
@@ -29,7 +30,7 @@ public class UserController {
 
     @GetMapping
     public Map<String, Object> homePage() {
-        Map<String, Object> result = new HashMap<>();
+        Map<String, Object> result = new TreeMap<>();
         result.put("currentUser", this.userService.getCurrentUser());
         result.put("activeLots", this.lotService.getAllLots(Status.ACTIVE));
         result.put("futureLots", this.lotService.getAllLots(Status.INACTIVE));
@@ -39,14 +40,17 @@ public class UserController {
 
     @GetMapping("/personalCabinet")
     public Map<String, Object> personalCabinet() {
-        Map<String, Object> result = new HashMap<>();
+        Map<String, Object> result = new TreeMap<>();
         result.put("currentUser", this.userService.getCurrentUser());
         result.put("activeLots", this.lotService.getLotsCurrentUser(Status.ACTIVE));
         result.put("inactiveLots", this.lotService.getLotsCurrentUser(Status.INACTIVE));
-        result.put("completedLots", this.lotService.getLotsCurrentUser(Status.COMPLETED));
+        result.put("completedLots", this.lotService.getLotsCurrentUser(Status.COMPLETED, Status.UNPAID));
+        result.put("completedPaidLots", this.lotService.getLotsCurrentUser(Status.COMPLETED, Status.PAID));
         result.put("activeBets", this.betService.getBetsCurrentUser(Status.ACTIVE));
         result.put("inactiveBets", this.betService.getBetsCurrentUser(Status.INACTIVE));
-        result.put("winBets", this.betService.getBetsCurrentUser(Status.WINNER));
+        result.put("winBets", this.betService.getBetsCurrentUser(Status.WINNER, Status.UNPAID));
+        result.put("winPaidBets", this.betService.getBetsCurrentUser(Status.WINNER, Status.PAID));
+        result.put("chats", this.userService.getChats());
         return result;
     }
 

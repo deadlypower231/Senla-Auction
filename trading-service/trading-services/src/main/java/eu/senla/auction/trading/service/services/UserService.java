@@ -1,9 +1,6 @@
 package eu.senla.auction.trading.service.services;
 
-import eu.senla.auction.trading.api.dto.chat.ChatMessageDto;
-import eu.senla.auction.trading.api.dto.chat.ChatViewDto;
-import eu.senla.auction.trading.api.dto.chat.MessagesDto;
-import eu.senla.auction.trading.api.dto.chat.SendMessageDto;
+import eu.senla.auction.trading.api.dto.chat.*;
 import eu.senla.auction.trading.api.dto.payment.BalanceDto;
 import eu.senla.auction.trading.api.dto.payment.BankDto;
 import eu.senla.auction.trading.api.dto.user.CreateUserDto;
@@ -27,7 +24,6 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
-@ComponentScan("eu.senla.auction.trading.rest")
 public class UserService implements IUserService {
 
     private static final String BANK_SERVICE = "http://localhost:8081/bank";
@@ -58,13 +54,14 @@ public class UserService implements IUserService {
         user.setPassword(passwordEncoder.encode(createUserDto.getPassword()));
         user.setEmail(createUserDto.getEmail());
         user.setBirthday(createUserDto.getBirthday());
-        UserDto savedUser = UserMapper.mapUserDto(userRepository.save(user));
+        User savedUser = userRepository.save(user);
         BankDto postBank = new BankDto();
-        postBank.setUserId(savedUser.getId());
+        postBank.setUserId(savedUser.getId().toString());
         postBank.setBalance(0.0);
         BankDto bankDto = restTemplate.postForObject(BANK_SERVICE + "/create", postBank, BankDto.class);
-        savedUser.setBalance(Optional.ofNullable(bankDto.getBalance()).orElse(0.0));
-        return savedUser;
+        savedUser.setBalance(Objects.requireNonNull(bankDto).getBalance());
+        UserDto result = UserMapper.mapUserDto(this.userRepository.save(savedUser));
+        return result;
     }
 
     @Override
@@ -80,7 +77,14 @@ public class UserService implements IUserService {
     public Boolean addBalance(BalanceDto balanceDto) {
         User user = userRepository.findByEmail(this.securityService.findLoggedInUser());
         balanceDto.setUserId(String.valueOf(user.getId()));
-        return restTemplate.postForObject(BANK_SERVICE + "/addBalance", balanceDto, Boolean.class);
+        Boolean result = restTemplate.postForObject(BANK_SERVICE + "/addBalance", balanceDto, Boolean.class);
+        if (Boolean.TRUE.equals(result)){
+            user.setBalance(user.getBalance()+balanceDto.getAmount());
+            this.userRepository.save(user);
+            return true;
+        }else {
+            return false;
+        }
     }
 
     //todo rewrite to 1 method
@@ -108,6 +112,14 @@ public class UserService implements IUserService {
             chatViewDto.setMessages(buildMessagesForChat(response.getBody()));
         }
         return chatViewDto;
+    }
+
+    @Override
+    public List<String> getChats() {
+        String email = this.securityService.findLoggedInUser();
+        ResponseEntity<ChatsDto> response = this.restTemplate.getForEntity(CHAT_SERVICE + "/chat/getChats{email}",
+                ChatsDto.class, email);
+        return response.getBody().getChatsId();
     }
 
     private Map<LocalDateTime, String> buildMessagesForChat(MessagesDto messagesDto) {

@@ -19,7 +19,6 @@ import org.springframework.data.mongodb.core.mapping.Field;
 public class Role extends AEntity<ObjectId> {
 
     @Field(name = "roleName")
-    @Indexed(unique = true)
     private String roleName;
 
     @Override

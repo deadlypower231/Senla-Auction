@@ -10,22 +10,12 @@ import org.springframework.web.bind.annotation.*;
 public class BetController {
 
     private final IBetService betService;
-    private final IScheduledTask scheduledTask;
 
-    public BetController(IBetService betService, IScheduledTask scheduledTask) {
+    public BetController(IBetService betService) {
         this.betService = betService;
-        this.scheduledTask = scheduledTask;
     }
 
-    @GetMapping("/checkStartLot")
-    public void checkStart(){
-        this.scheduledTask.checkStartLots();
-    }
 
-    @GetMapping("/checkEndLot")
-    public void checkEnd(){
-        this.scheduledTask.checkEndLots();
-    }
 
     @PostMapping("/addBet")
     public Boolean addBet(@RequestBody CreateBetDto betDto) {

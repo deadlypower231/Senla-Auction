@@ -3,11 +3,11 @@ package eu.senla.auction.payment.rest.controller;
 import eu.senla.auction.payment.api.dto.BalanceDto;
 import eu.senla.auction.payment.api.dto.BankDto;
 import eu.senla.auction.payment.api.dto.CreateBankDto;
+import eu.senla.auction.payment.api.dto.PaymentDto;
 import eu.senla.auction.payment.api.services.IBankService;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/bank")
@@ -35,9 +35,9 @@ public class BankController {
         return this.bankService.addBalance(balanceDto);
     }
 
-    @GetMapping("/getAll")
-    public List<BankDto> getAll() {
-        return this.bankService.getAll();
+    @PostMapping("/payment")
+    public Boolean lotPayment(@RequestBody PaymentDto paymentDto) {
+        return this.bankService.payment(paymentDto);
     }
 
 }

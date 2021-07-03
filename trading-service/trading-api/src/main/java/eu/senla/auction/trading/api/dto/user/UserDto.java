@@ -25,7 +25,6 @@ public class UserDto {
     private String lastName;
     private String email;
     private String birthday;
-    private String password;
     private Double balance;
 
 

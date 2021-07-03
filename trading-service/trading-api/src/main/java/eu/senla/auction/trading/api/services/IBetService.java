@@ -2,6 +2,7 @@ package eu.senla.auction.trading.api.services;
 
 import eu.senla.auction.trading.api.dto.bet.BetDto;
 import eu.senla.auction.trading.api.dto.bet.CreateBetDto;
+import eu.senla.auction.trading.api.dto.lot.LotIdDto;
 import eu.senla.auction.trading.entity.enums.Status;
 import org.springframework.validation.BindingResult;
 
@@ -12,6 +13,8 @@ public interface IBetService {
 
     Boolean addBet(CreateBetDto createBetDto);
 
-    List<BetDto> getBetsCurrentUser(Status status);
+    List<?> getBetsCurrentUser(Status status);
+
+    List<?> getBetsCurrentUser(Status status, Status paymentStatus);
 
 }

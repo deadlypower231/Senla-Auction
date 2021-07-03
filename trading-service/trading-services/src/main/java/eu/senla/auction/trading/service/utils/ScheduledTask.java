@@ -28,8 +28,6 @@ import java.util.stream.Collectors;
 @EnableScheduling
 public class ScheduledTask implements IScheduledTask {
 
-    private static String CHAT_SERVICE = "http://localhost:8082/chat";
-
     private final LotRepository lotRepository;
     private final BetRepository betRepository;
     private final UserRepository userRepository;
@@ -49,7 +47,7 @@ public class ScheduledTask implements IScheduledTask {
         return taskScheduler;
     }
 
-    @Scheduled(cron = "0 0 * * * *")
+    @Scheduled(cron = "0 * * * * *")
     @Override
     public void checkStartLots() {
         List<Lot> lots = this.lotRepository.findAllByStatus(Status.INACTIVE).stream()
@@ -60,7 +58,7 @@ public class ScheduledTask implements IScheduledTask {
         this.lotRepository.saveAll(lots);
     }
 
-    @Scheduled(cron = "0 0 * * * *")
+    @Scheduled(cron = "0 * * * * *")
     @Override
     public void checkEndLots() {
         List<Lot> lots = this.lotRepository.findAllByStatus(Status.ACTIVE).stream()
@@ -76,26 +74,10 @@ public class ScheduledTask implements IScheduledTask {
                 }
                 x.setUserWin(winBet.getUser());
                 winBet.setStatus(Status.WINNER);
-                ChatDto chatDto = createChatDto(x);
-                if (chatDto != null) {
-                    x.setChat(chatDto.getId());
-                    winBet.setChat(chatDto.getId());
-                }
                 this.betRepository.save(winBet);
             }
-
         }
         this.lotRepository.saveAll(lots);
-    }
-
-    private ChatDto createChatDto(Lot lot) {
-        CreateChatDto createChatDto = new CreateChatDto();
-        createChatDto.setLotId(lot.getId().toString());
-        createChatDto.setDealerEmail(this.userRepository.findById(lot.getUserId()).getEmail());
-        createChatDto.setBuyerEmail(this.userRepository.findById(lot.getUserWin()).getEmail());
-        ResponseEntity<ChatDto> responseEntity = restTemplate.postForEntity(CHAT_SERVICE + "/createChat",
-                createChatDto, ChatDto.class);
-        return responseEntity.getBody();
     }
 
 }

@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.mongodb.config.AbstractMongoClientConfiguration;
+import org.springframework.data.mongodb.core.convert.MongoCustomConversions;
+import org.springframework.data.mongodb.core.mapping.MongoMappingContext;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 import java.util.Collection;
@@ -35,6 +37,18 @@ public class MongoConfig extends AbstractMongoClientConfiguration {
                 .applyConnectionString(connectionString)
                 .build();
         return MongoClients.create(mongoClientSettings);
+    }
+
+    @Override
+    public MongoMappingContext mongoMappingContext(MongoCustomConversions customConversions){
+        MongoMappingContext mappingContext = new MongoMappingContext();
+        mappingContext.setAutoIndexCreation(true);
+        return mappingContext;
+    }
+
+    @Override
+    protected boolean autoIndexCreation() {
+        return super.autoIndexCreation();
     }
 
     @Override

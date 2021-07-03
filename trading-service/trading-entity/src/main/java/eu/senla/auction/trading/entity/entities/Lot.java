@@ -32,6 +32,7 @@ public class Lot extends AEntity<ObjectId> {
     private List<ObjectId> bets;
     private Status status;
     private ObjectId chat;
+    private Status statusPayment;
 
 
 }

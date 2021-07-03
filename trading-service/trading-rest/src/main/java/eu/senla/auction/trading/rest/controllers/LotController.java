@@ -2,11 +2,12 @@ package eu.senla.auction.trading.rest.controllers;
 
 import eu.senla.auction.trading.api.dto.lot.CreateLotDto;
 import eu.senla.auction.trading.api.dto.lot.LotDto;
+import eu.senla.auction.trading.api.dto.lot.LotIdDto;
 import eu.senla.auction.trading.api.services.ILotService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import eu.senla.auction.trading.api.utils.IScheduledTask;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/lot")
@@ -22,5 +23,11 @@ public class LotController {
     public LotDto addLot(@RequestBody CreateLotDto lotDto) {
         return this.lotService.addLot(lotDto);
     }
+
+    @PostMapping("/payment")
+    public Boolean payment(@RequestBody LotIdDto lotIdDto){
+        return this.lotService.payment(lotIdDto);
+    }
+
 
 }

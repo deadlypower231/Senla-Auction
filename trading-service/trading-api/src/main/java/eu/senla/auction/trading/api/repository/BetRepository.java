@@ -8,7 +8,6 @@ import java.util.List;
 
 public interface BetRepository extends MongoRepository<Bet, ObjectId> {
 
-    List<Bet> findAllByIdOrderByPrice(List<ObjectId> ids);
-
+    List<Bet> findAllById(List<String> ids);
 
 }
