@@ -46,6 +46,10 @@ public class UserService implements IUserService {
     @Override
     @Transactional
     public UserDto saveUser(CreateUserDto createUserDto) {
+        User newUser = this.userRepository.findByEmail(createUserDto.getEmail());
+        if (newUser!=null){
+            return UserMapper.mapUserDto(newUser);
+        }
         User user = new User();
         Role role = roleRepository.findRoleByRoleName("USER_ROLE");
         user.setFirstName(createUserDto.getFirstName());
@@ -67,6 +71,7 @@ public class UserService implements IUserService {
     @Override
     @Transactional
     public HomePageDto getCurrentUser() {
+        String s = this.securityService.findLoggedInUser();
         User user = userRepository.findByEmail(this.securityService.findLoggedInUser());
         ResponseEntity<BankDto> response = restTemplate.getForEntity(BANK_SERVICE + "/getBalanceById{id}", BankDto.class, user.getId());
         user.setBalance(Optional.ofNullable(response.getBody().getBalance()).orElse(null));
