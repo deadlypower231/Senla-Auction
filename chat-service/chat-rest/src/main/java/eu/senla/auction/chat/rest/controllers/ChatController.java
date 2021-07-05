@@ -7,6 +7,8 @@ import eu.senla.auction.chat.api.services.IChatService;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/chat")
 @ComponentScan("eu.senla.auction.chat.service")
@@ -26,6 +28,11 @@ public class ChatController {
     @PostMapping("/createChat")
     public ChatDto createChat(@RequestBody CreateChatDto createChatDto) {
         return this.chatService.createChat(createChatDto);
+    }
+
+    @GetMapping("/getAll")
+    public List<ChatDto> getAll(){
+        return this.chatService.getChats();
     }
 
 }

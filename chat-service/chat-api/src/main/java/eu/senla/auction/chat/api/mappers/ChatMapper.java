@@ -6,6 +6,7 @@ import eu.senla.auction.chat.entity.entities.Chat;
 import lombok.experimental.UtilityClass;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @UtilityClass
@@ -32,6 +33,10 @@ public class ChatMapper {
                         source.getDealerMessages().stream().map(String::valueOf).collect(Collectors.toList()) :
                         new ArrayList<>())
                 .build();
+    }
+
+    public List<ChatDto> mapChatsDto(List<Chat> source){
+        return source.stream().map(ChatMapper::mapChatDto).collect(Collectors.toList());
     }
 
 }

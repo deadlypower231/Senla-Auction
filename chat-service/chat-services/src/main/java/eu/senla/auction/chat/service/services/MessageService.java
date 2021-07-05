@@ -64,11 +64,14 @@ public class MessageService implements IMessageService {
     @Override
     public MessagesDto chat(ChatMessageDto chatMessageDto) {
         Chat chat = this.chatRepository.findById(chatMessageDto.getChatId());
-        changeStatusToRead((chat.getBuyerEmail().equals(chatMessageDto.getEmail()) ? chat.getDealerMessages() : chat.getBuyerMessages()));
-        MessagesDto result = MessageMapper.mapMessagesDto(chat);
-        result.setBuyerMessage(buildMessages(chat.getBuyerMessages()));
-        result.setDealerMessage(buildMessages(chat.getDealerMessages()));
-        return result;
+        if (chat.getBuyerEmail().equals(chatMessageDto.getEmail()) || chat.getDealerEmail().equals(chatMessageDto.getEmail())) {
+            changeStatusToRead((chat.getBuyerEmail().equals(chatMessageDto.getEmail()) ? chat.getDealerMessages() : chat.getBuyerMessages()));
+            MessagesDto result = MessageMapper.mapMessagesDto(chat);
+            result.setBuyerMessage(buildMessages(chat.getBuyerMessages()));
+            result.setDealerMessage(buildMessages(chat.getDealerMessages()));
+            return result;
+        }
+        return null;
     }
 
     private void changeStatusToRead(List<ObjectId> ids) {

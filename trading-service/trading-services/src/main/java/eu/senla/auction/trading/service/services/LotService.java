@@ -26,21 +26,19 @@ import java.util.*;
 @Service
 public class LotService implements ILotService {
 
-    private static final String CHAT_SERVICE = "http://localhost:8082/chat";
-    private static final String PAYMENT_SERVICE = "http://localhost:8081/bank";
+    private static final String CHAT_SERVICE = "http://chat:8080/chat";
+    private static final String PAYMENT_SERVICE = "http://payment:8080/bank";
 
     private final RestTemplate restTemplate;
     private final BetRepository betRepository;
-    private final IUserService userService;
     private final ISecurityService securityService;
     private final UserRepository userRepository;
     private final LotRepository lotRepository;
 
-    public LotService(RestTemplate restTemplate, BetRepository betRepository, IUserService userService, ISecurityService securityService,
+    public LotService(RestTemplate restTemplate, BetRepository betRepository, ISecurityService securityService,
                       UserRepository userRepository, LotRepository lotRepository) {
         this.restTemplate = restTemplate;
         this.betRepository = betRepository;
-        this.userService = userService;
         this.securityService = securityService;
         this.userRepository = userRepository;
         this.lotRepository = lotRepository;

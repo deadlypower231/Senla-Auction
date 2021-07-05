@@ -50,4 +50,9 @@ public class ChatService implements IChatService {
         chatsDto.setChatsId(ids);
         return chatsDto;
     }
+
+    @Override
+    public List<ChatDto> getChats() {
+        return ChatMapper.mapChatsDto(this.chatRepository.findAll());
+    }
 }

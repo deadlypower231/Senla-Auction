@@ -26,8 +26,8 @@ import java.util.*;
 @Service
 public class UserService implements IUserService {
 
-    private static final String BANK_SERVICE = "http://localhost:8081/bank";
-    private static final String CHAT_SERVICE = "http://localhost:8082";
+    private static final String BANK_SERVICE = "http://payment:8080/bank";
+    private static final String CHAT_SERVICE = "http://chat:8080";
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
@@ -115,8 +115,9 @@ public class UserService implements IUserService {
         if (response.getBody() != null) {
             chatViewDto.setId(response.getBody().getChatId().toString());
             chatViewDto.setMessages(buildMessagesForChat(response.getBody()));
+            return chatViewDto;
         }
-        return chatViewDto;
+        return null;
     }
 
     @Override

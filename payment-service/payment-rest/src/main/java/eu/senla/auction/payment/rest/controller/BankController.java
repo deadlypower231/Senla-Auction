@@ -9,6 +9,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/bank")
 @ComponentScan("eu.senla.auction.payment.service")
@@ -23,6 +25,11 @@ public class BankController {
     @PostMapping("/create")
     public CreateBankDto createBank(@RequestBody CreateBankDto createBankDto) {
         return this.bankService.createBank(createBankDto);
+    }
+
+    @GetMapping("/getAll")
+    public List<BankDto> getAllBank(){
+        return this.bankService.getAll();
     }
 
     @GetMapping("/getBalanceById{id}")

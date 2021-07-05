@@ -4,6 +4,7 @@ import eu.senla.auction.trading.api.dto.chat.ChatMessageDto;
 import eu.senla.auction.trading.api.dto.chat.ChatViewDto;
 import eu.senla.auction.trading.api.dto.chat.SendMessageDto;
 import eu.senla.auction.trading.api.dto.payment.BalanceDto;
+import eu.senla.auction.trading.api.dto.payment.BankDto;
 import eu.senla.auction.trading.api.services.IBetService;
 import eu.senla.auction.trading.api.services.ILotService;
 import eu.senla.auction.trading.api.services.IUserService;
@@ -11,6 +12,7 @@ import eu.senla.auction.trading.entity.enums.Status;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -68,4 +70,5 @@ public class UserController {
     public ChatViewDto sendMessage(@RequestBody SendMessageDto sendMessageDto) {
         return this.userService.sendMessage(sendMessageDto);
     }
+
 }
