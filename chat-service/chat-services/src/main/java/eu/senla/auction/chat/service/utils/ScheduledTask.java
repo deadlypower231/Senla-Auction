@@ -37,8 +37,8 @@ public class ScheduledTask implements IScheduledTask {
     public void checkMessages() {
         List<Chat> chats = this.chatRepository.findAll();
         for (Chat chat : chats) {
-            sendNotification(chat.getBuyerEmail(), chat.getBuyerMessages(), chat.getId().toString());
-            sendNotification(chat.getDealerEmail(), chat.getDealerMessages(), chat.getId().toString());
+            sendNotification(chat.getDealerEmail(), chat.getBuyerMessages(), chat.getId().toString());
+            sendNotification(chat.getBuyerEmail(), chat.getDealerMessages(), chat.getId().toString());
         }
     }
 
