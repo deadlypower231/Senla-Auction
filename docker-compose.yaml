@@ -54,8 +54,6 @@ services:
       - TZ=Europe/Minsk
     ports:
     - 27018:27017
-    volumes:
-      - ./db-data:/mongodb/data/db
 
 networks:
   auction:
