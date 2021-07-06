@@ -13,7 +13,7 @@ import eu.senla.auction.trading.api.services.ISecurityService;
 import eu.senla.auction.trading.api.services.IUserService;
 import eu.senla.auction.trading.entity.entities.Role;
 import eu.senla.auction.trading.entity.entities.User;
-import org.springframework.context.annotation.ComponentScan;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -24,6 +24,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
+@Slf4j
 public class UserService implements IUserService {
 
     private static final String BANK_SERVICE = "http://payment:8080/bank";
@@ -44,10 +45,9 @@ public class UserService implements IUserService {
     }
 
     @Override
-    @Transactional
     public UserDto saveUser(CreateUserDto createUserDto) {
         User newUser = this.userRepository.findByEmail(createUserDto.getEmail());
-        if (newUser!=null){
+        if (newUser != null) {
             return UserMapper.mapUserDto(newUser);
         }
         User user = new User();
@@ -59,6 +59,7 @@ public class UserService implements IUserService {
         user.setEmail(createUserDto.getEmail());
         user.setBirthday(createUserDto.getBirthday());
         User savedUser = userRepository.save(user);
+        log.info("creat new user: {}", savedUser.getId().toString());
         BankDto postBank = new BankDto();
         postBank.setUserId(savedUser.getId().toString());
         postBank.setBalance(0.0);
@@ -71,11 +72,11 @@ public class UserService implements IUserService {
     @Override
     @Transactional
     public HomePageDto getCurrentUser() {
-        String s = this.securityService.findLoggedInUser();
         User user = userRepository.findByEmail(this.securityService.findLoggedInUser());
         ResponseEntity<BankDto> response = restTemplate.getForEntity(BANK_SERVICE + "/getBalanceById{id}", BankDto.class, user.getId());
         user.setBalance(Optional.ofNullable(response.getBody().getBalance()).orElse(null));
         return UserMapper.mapHomePageDto(user);
+
     }
 
     @Override
@@ -83,11 +84,11 @@ public class UserService implements IUserService {
         User user = userRepository.findByEmail(this.securityService.findLoggedInUser());
         balanceDto.setUserId(String.valueOf(user.getId()));
         Boolean result = restTemplate.postForObject(BANK_SERVICE + "/addBalance", balanceDto, Boolean.class);
-        if (Boolean.TRUE.equals(result)){
-            user.setBalance(user.getBalance()+balanceDto.getAmount());
+        if (Boolean.TRUE.equals(result)) {
+            user.setBalance(user.getBalance() + balanceDto.getAmount());
             this.userRepository.save(user);
             return true;
-        }else {
+        } else {
             return false;
         }
     }
@@ -115,6 +116,8 @@ public class UserService implements IUserService {
         if (response.getBody() != null) {
             chatViewDto.setId(response.getBody().getChatId().toString());
             chatViewDto.setMessages(buildMessagesForChat(response.getBody()));
+            log.info("Creating new chat id: {}. Dealer - {}, Buyer - {}", response.getBody().getChatId().toString(),
+                    response.getBody().getDealerEmail(), response.getBody().getBuyerEmail());
             return chatViewDto;
         }
         return null;
@@ -125,8 +128,12 @@ public class UserService implements IUserService {
         String email = this.securityService.findLoggedInUser();
         ResponseEntity<ChatsDto> response = this.restTemplate.getForEntity(CHAT_SERVICE + "/chat/getChats{email}",
                 ChatsDto.class, email);
-        return response.getBody().getChatsId();
+        if (response.getBody() !=null) {
+            return response.getBody().getChatsId();
+        }
+        return new ArrayList<>();
     }
+
 
     private Map<LocalDateTime, String> buildMessagesForChat(MessagesDto messagesDto) {
         User buyer = this.userRepository.findByEmail(messagesDto.getBuyerEmail());

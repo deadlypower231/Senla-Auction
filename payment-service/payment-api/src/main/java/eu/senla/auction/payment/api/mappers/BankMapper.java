@@ -19,10 +19,10 @@ public class BankMapper {
     }
 
     public BankDto mapBankDto(Bank source) {
-        return BankDto.builder()
+        return (source != null) ? BankDto.builder()
                 .userId(source.getUserId())
                 .balance(source.getBalance())
-                .build();
+                .build() : null;
     }
 
     public CreateBankDto createMapBank(Bank source) {

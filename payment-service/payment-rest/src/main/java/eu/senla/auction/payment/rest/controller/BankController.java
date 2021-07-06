@@ -6,6 +6,7 @@ import eu.senla.auction.payment.api.dto.CreateBankDto;
 import eu.senla.auction.payment.api.dto.PaymentDto;
 import eu.senla.auction.payment.api.services.IBankService;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
