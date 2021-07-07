@@ -16,7 +16,7 @@ public interface IUserService {
 
     UserDto saveUser(CreateUserDto createUserDto);
 
-    HomePageDto getCurrentUser();
+    HomePageDto getCurrentUser(String token);
 
     Boolean addBalance(BalanceDto balanceDto);
 

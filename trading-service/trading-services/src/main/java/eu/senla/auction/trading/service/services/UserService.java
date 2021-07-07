@@ -14,6 +14,10 @@ import eu.senla.auction.trading.api.services.IUserService;
 import eu.senla.auction.trading.entity.entities.Role;
 import eu.senla.auction.trading.entity.entities.User;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -25,6 +29,7 @@ import java.util.*;
 
 @Service
 @Slf4j
+@ComponentScan(basePackages = {"eu.senla.auction.trading.rest.jwt"})
 public class UserService implements IUserService {
 
     private static final String BANK_SERVICE = "http://payment:8080/bank";
@@ -70,10 +75,14 @@ public class UserService implements IUserService {
     }
 
     @Override
-    @Transactional
-    public HomePageDto getCurrentUser() {
+    public HomePageDto getCurrentUser(String token) {
         User user = userRepository.findByEmail(this.securityService.findLoggedInUser());
-        ResponseEntity<BankDto> response = restTemplate.getForEntity(BANK_SERVICE + "/getBalanceById{id}", BankDto.class, user.getId());
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", token);
+        HttpEntity<?> entityReq = new HttpEntity<>("http://localhost:8081/bank" +
+                "/getBalanceById{id}", headers);
+        ResponseEntity<BankDto> response = restTemplate.exchange("http://localhost:8081/bank" +
+                "/getBalanceById{id}", HttpMethod.GET, entityReq, BankDto.class,user.getId());
         user.setBalance(Optional.ofNullable(response.getBody().getBalance()).orElse(null));
         return UserMapper.mapHomePageDto(user);
 
@@ -128,7 +137,7 @@ public class UserService implements IUserService {
         String email = this.securityService.findLoggedInUser();
         ResponseEntity<ChatsDto> response = this.restTemplate.getForEntity(CHAT_SERVICE + "/chat/getChats{email}",
                 ChatsDto.class, email);
-        if (response.getBody() !=null) {
+        if (response.getBody() != null) {
             return response.getBody().getChatsId();
         }
         return new ArrayList<>();

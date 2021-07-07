@@ -1,15 +1,20 @@
 package eu.senla.auction.trading.rest.config;
 
+import eu.senla.auction.trading.rest.jwt.JwtAuthenticationEntryPoint;
+import eu.senla.auction.trading.rest.jwt.JwtRequestFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.config.oauth2.client.CommonOAuth2Provider;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.InMemoryOAuth2AuthorizedClientService;
@@ -22,6 +27,7 @@ import org.springframework.security.oauth2.client.web.AuthorizationRequestReposi
 import org.springframework.security.oauth2.client.web.HttpSessionOAuth2AuthorizationRequestRepository;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
@@ -41,10 +47,26 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final Environment env;
     private final PasswordEncoder passwordEncoder;
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private final JwtRequestFilter jwtRequestFilter;
 
-    public SecurityConfig(Environment env, PasswordEncoder passwordEncoder) {
+    public SecurityConfig(Environment env, PasswordEncoder passwordEncoder, JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint, JwtRequestFilter jwtRequestFilter) {
         this.env = env;
         this.passwordEncoder = passwordEncoder;
+        this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
+        this.jwtRequestFilter = jwtRequestFilter;
+    }
+
+
+    @Override
+    @Bean
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
+
+    @Override
+    protected AuthenticationManager authenticationManager() throws Exception {
+        return super.authenticationManager();
     }
 
     @Bean
@@ -76,6 +98,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/" ,"/login/**", "/roles/**").permitAll()
                 .anyRequest().authenticated()
                 .and().formLogin().loginProcessingUrl("/login")
+                .and().exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .oauth2Login()
                 .loginProcessingUrl("/login")
@@ -84,7 +108,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .baseUri("/login/oauth2/code/**")
                 .and()
                 .clientRegistrationRepository(clientRegistrationRepository())
-                .authorizedClientService(authorizedClientService());
+                .authorizedClientService(authorizedClientService())
+                .and().addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
     @Bean

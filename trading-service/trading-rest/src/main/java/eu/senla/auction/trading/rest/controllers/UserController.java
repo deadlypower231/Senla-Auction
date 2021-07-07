@@ -4,15 +4,13 @@ import eu.senla.auction.trading.api.dto.chat.ChatMessageDto;
 import eu.senla.auction.trading.api.dto.chat.ChatViewDto;
 import eu.senla.auction.trading.api.dto.chat.SendMessageDto;
 import eu.senla.auction.trading.api.dto.payment.BalanceDto;
-import eu.senla.auction.trading.api.dto.payment.BankDto;
 import eu.senla.auction.trading.api.services.IBetService;
 import eu.senla.auction.trading.api.services.ILotService;
 import eu.senla.auction.trading.api.services.IUserService;
 import eu.senla.auction.trading.entity.enums.Status;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -23,17 +21,19 @@ public class UserController {
     private final IUserService userService;
     private final ILotService lotService;
     private final IBetService betService;
+    private final OAuth2AuthorizedClientService authorizedClientService;
 
-    public UserController(IUserService userService, ILotService lotService, IBetService betService) {
+    public UserController(IUserService userService, ILotService lotService, IBetService betService, OAuth2AuthorizedClientService authorizedClientService) {
         this.userService = userService;
         this.lotService = lotService;
         this.betService = betService;
+        this.authorizedClientService = authorizedClientService;
     }
 
     @GetMapping
-    public Map<String, Object> homePage() {
+    public Map<String, Object> homePage(@RequestHeader(name = "Authorization") String token) {
         Map<String, Object> result = new TreeMap<>();
-        result.put("currentUser", this.userService.getCurrentUser());
+        result.put("currentUser", this.userService.getCurrentUser(token));
         result.put("activeLots", this.lotService.getAllLots(Status.ACTIVE));
         result.put("futureLots", this.lotService.getAllLots(Status.INACTIVE));
         result.put("completedLots", this.lotService.getAllLots(Status.COMPLETED));
@@ -41,9 +41,9 @@ public class UserController {
     }
 
     @GetMapping("/personalCabinet")
-    public Map<String, Object> personalCabinet() {
+    public Map<String, Object> personalCabinet(@RequestHeader(name = "Authorization") String token) {
         Map<String, Object> result = new TreeMap<>();
-        result.put("currentUser", this.userService.getCurrentUser());
+        result.put("currentUser", this.userService.getCurrentUser(token));
         result.put("activeLots", this.lotService.getLotsCurrentUser(Status.ACTIVE));
         result.put("inactiveLots", this.lotService.getLotsCurrentUser(Status.INACTIVE));
         result.put("completedLots", this.lotService.getLotsCurrentUser(Status.COMPLETED, Status.UNPAID));

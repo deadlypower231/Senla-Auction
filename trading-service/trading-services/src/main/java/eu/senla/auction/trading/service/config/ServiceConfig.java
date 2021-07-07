@@ -1,8 +1,6 @@
 package eu.senla.auction.trading.service.config;
 
-import eu.senla.auction.trading.api.utils.IScheduledTask;
 import eu.senla.auction.trading.service.logger.ServiceLogg;
-import eu.senla.auction.trading.service.utils.ScheduledTask;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -16,7 +14,7 @@ import org.springframework.web.client.RestTemplate;
 public class ServiceConfig {
 
     @Bean
-    public ServiceLogg serviceLogg(){
+    public ServiceLogg serviceLogg() {
         return new ServiceLogg();
     }
 
