@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.bson.types.ObjectId;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @EqualsAndHashCode(callSuper = true)
@@ -16,6 +17,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "bank")
 public class Bank extends AEntity<ObjectId> {
 
+    @Indexed(unique = true)
     private String userId;
     private Double balance;
 

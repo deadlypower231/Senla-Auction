@@ -4,6 +4,7 @@ import eu.senla.auction.payment.api.dto.BalanceDto;
 import eu.senla.auction.payment.api.dto.BankDto;
 import eu.senla.auction.payment.api.dto.CreateBankDto;
 import eu.senla.auction.payment.api.dto.PaymentDto;
+import org.springframework.data.crossstore.ChangeSetPersister;
 
 import java.util.List;
 

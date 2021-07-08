@@ -80,9 +80,9 @@ public class UserService implements IUserService {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", token);
         HttpEntity<?> entityReq = new HttpEntity<>("http://localhost:8081/bank" +
-                "/getBalanceById{id}", headers);
+                "/getBalanceById/{id}", headers);
         ResponseEntity<BankDto> response = restTemplate.exchange("http://localhost:8081/bank" +
-                "/getBalanceById{id}", HttpMethod.GET, entityReq, BankDto.class,user.getId());
+                "/getBalanceById/{id}", HttpMethod.GET, entityReq, BankDto.class,user.getId());
         user.setBalance(Optional.ofNullable(response.getBody().getBalance()).orElse(null));
         return UserMapper.mapHomePageDto(user);
 

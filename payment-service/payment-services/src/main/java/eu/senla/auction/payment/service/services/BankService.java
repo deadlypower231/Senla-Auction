@@ -13,9 +13,12 @@ import eu.senla.auction.payment.entities.Bank;
 import eu.senla.auction.payment.entities.Card;
 import eu.senla.auction.payment.entities.Transfer;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.dao.DuplicateKeyException;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @ComponentScan("eu.senla.auction.payment.api")
@@ -32,15 +35,19 @@ public class BankService implements IBankService {
     }
 
     @Override
-    public CreateBankDto createBank(CreateBankDto createBankDto) {
-        Bank bank = new Bank();
-        bank.setUserId(createBankDto.getUserId());
-        bank.setBalance(createBankDto.getBalance());
-        return BankMapper.createMapBank(balanceRepository.save(bank));
+    public CreateBankDto createBank(CreateBankDto createBankDto) throws DuplicateKeyException {
+        try {
+            Bank bank = new Bank();
+            bank.setUserId(createBankDto.getUserId());
+            bank.setBalance(createBankDto.getBalance());
+            return BankMapper.createMapBank(balanceRepository.save(bank));
+        }catch (DuplicateKeyException e){
+            throw new DuplicateKeyException("This bank with userId exists!");
+        }
     }
 
     @Override
-    public BankDto getBalanceById(String id) {
+    public BankDto getBalanceById(String id){
         Bank bank = balanceRepository.getBankByUserId(id);
         return BankMapper.mapBankDto(bank);
     }
