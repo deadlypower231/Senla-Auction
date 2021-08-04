@@ -1,22 +1,20 @@
 package eu.senla.auction.trading.entity.entities;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.OffsetDateTime;
-import java.util.*;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
-@EqualsAndHashCode(callSuper = true)
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @SuperBuilder
@@ -34,4 +32,17 @@ public class User extends AEntity<ObjectId> {
     private List<ObjectId> lots;
     private List<ObjectId> bets;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        User user = (User) o;
+        return firstName.equals(user.firstName) && lastName.equals(user.lastName) && email.equals(user.email) && birthday.equals(user.birthday) && password.equals(user.password) && Objects.equals(balance, user.balance) && Objects.equals(roles, user.roles) && Objects.equals(lots, user.lots) && Objects.equals(bets, user.bets);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), firstName, lastName, email, birthday, password, balance, roles, lots, bets);
+    }
 }
