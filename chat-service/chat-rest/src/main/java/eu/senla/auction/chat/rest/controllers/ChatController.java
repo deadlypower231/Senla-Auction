@@ -5,6 +5,8 @@ import eu.senla.auction.chat.api.dto.ChatsDto;
 import eu.senla.auction.chat.api.dto.CreateChatDto;
 import eu.senla.auction.chat.api.services.IChatService;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,18 +23,19 @@ public class ChatController {
     }
 
     @GetMapping("/getChats{email}")
-    public ChatsDto getChats(@PathVariable String email) {
-        return this.chatService.getChats(email);
+    public ResponseEntity<ChatsDto> getChats(@PathVariable String email) {
+        return new ResponseEntity<>(this.chatService.getChats(email), HttpStatus.OK);
     }
 
     @PostMapping("/createChat")
-    public ChatDto createChat(@RequestBody CreateChatDto createChatDto) {
-        return this.chatService.createChat(createChatDto);
+    public ResponseEntity<ChatDto> createChat(@RequestBody CreateChatDto createChatDto) {
+        return new ResponseEntity<>(this.chatService.createChat(createChatDto), HttpStatus.OK);
     }
 
     @GetMapping("/getAll")
-    public List<ChatDto> getAll(){
-        return this.chatService.getChats();
+    public ResponseEntity<List<ChatDto>> getAll(){
+        return new ResponseEntity<>(this.chatService.getChats(), HttpStatus.OK);
     }
+
 
 }
