@@ -9,4 +9,5 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableWebMvc
 @ComponentScan("eu.senla.auction.chat.rest")
 public class RestConfig implements WebMvcConfigurer {
+
 }

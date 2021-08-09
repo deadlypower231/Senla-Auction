@@ -1,22 +1,17 @@
 package eu.senla.auction.trading.service.utils;
 
-import eu.senla.auction.trading.api.dto.chat.ChatDto;
-import eu.senla.auction.trading.api.dto.chat.CreateChatDto;
 import eu.senla.auction.trading.api.repository.BetRepository;
 import eu.senla.auction.trading.api.repository.LotRepository;
-import eu.senla.auction.trading.api.repository.UserRepository;
 import eu.senla.auction.trading.api.utils.IScheduledTask;
 import eu.senla.auction.trading.entity.entities.Bet;
 import eu.senla.auction.trading.entity.entities.Lot;
 import eu.senla.auction.trading.entity.enums.Status;
 import org.springframework.context.annotation.Bean;
-import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
 import java.util.Comparator;
@@ -30,14 +25,10 @@ public class ScheduledTask implements IScheduledTask {
 
     private final LotRepository lotRepository;
     private final BetRepository betRepository;
-    private final UserRepository userRepository;
-    private final RestTemplate restTemplate;
 
-    public ScheduledTask(LotRepository lotRepository, BetRepository betRepository, UserRepository userRepository, RestTemplate restTemplate) {
+    public ScheduledTask(LotRepository lotRepository, BetRepository betRepository) {
         this.lotRepository = lotRepository;
         this.betRepository = betRepository;
-        this.userRepository = userRepository;
-        this.restTemplate = restTemplate;
     }
 
     @Bean
