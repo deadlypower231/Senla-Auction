@@ -1,9 +1,7 @@
 package eu.senla.auction.payment.rest.config;
 
-import eu.senla.auction.payment.rest.exceptions.DuplicateException;
 import eu.senla.auction.payment.rest.jwt.JwtAuthenticationEntryPoint;
 import eu.senla.auction.payment.rest.jwt.JwtRequestFilter;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -37,11 +35,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/bank/**").permitAll();
-//                .anyRequest().authenticated()
-//                .and().exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
-//                .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-////                .and().oauth2Login()
-//                .and().addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
 }
