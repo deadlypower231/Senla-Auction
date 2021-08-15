@@ -9,6 +9,9 @@ import eu.senla.auction.trading.api.dto.payment.BankDto;
 import eu.senla.auction.trading.api.dto.user.CreateUserDto;
 import eu.senla.auction.trading.api.dto.user.HomePageDto;
 import eu.senla.auction.trading.api.dto.user.UserDto;
+import eu.senla.auction.trading.api.exceptions.NoAccess;
+import eu.senla.auction.trading.api.exceptions.NotFoundHand;
+import org.omg.CosNaming.NamingContextPackage.NotFound;
 
 import java.util.List;
 
@@ -20,7 +23,7 @@ public interface IUserService {
 
     Boolean addBalance(BalanceDto balanceDto);
 
-    ChatViewDto chat(ChatMessageDto chatMessageDto);
+    ChatViewDto chat(ChatMessageDto chatMessageDto) throws NoAccess, NotFoundHand;
 
     ChatViewDto sendMessage(SendMessageDto sendMessageDto);
 

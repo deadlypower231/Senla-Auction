@@ -5,7 +5,6 @@ import eu.senla.auction.payment.api.dto.BankDto;
 import eu.senla.auction.payment.api.dto.CreateBankDto;
 import eu.senla.auction.payment.api.dto.PaymentDto;
 import eu.senla.auction.payment.api.services.IBankService;
-import eu.senla.auction.payment.rest.exceptions.DuplicateException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.dao.DuplicateKeyException;

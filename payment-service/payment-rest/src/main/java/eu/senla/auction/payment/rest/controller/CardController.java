@@ -2,7 +2,7 @@ package eu.senla.auction.payment.rest.controller;
 
 import eu.senla.auction.payment.api.dto.CardDto;
 import eu.senla.auction.payment.api.services.ICardService;
-import eu.senla.auction.payment.rest.exceptions.DuplicateException;
+import eu.senla.auction.payment.api.exceptions.DuplicateException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;

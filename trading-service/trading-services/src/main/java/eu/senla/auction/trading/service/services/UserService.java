@@ -6,6 +6,8 @@ import eu.senla.auction.trading.api.dto.payment.BankDto;
 import eu.senla.auction.trading.api.dto.user.CreateUserDto;
 import eu.senla.auction.trading.api.dto.user.HomePageDto;
 import eu.senla.auction.trading.api.dto.user.UserDto;
+import eu.senla.auction.trading.api.exceptions.NoAccess;
+import eu.senla.auction.trading.api.exceptions.NotFoundHand;
 import eu.senla.auction.trading.api.mappers.UserMapper;
 import eu.senla.auction.trading.api.repository.RoleRepository;
 import eu.senla.auction.trading.api.repository.UserRepository;
@@ -14,6 +16,7 @@ import eu.senla.auction.trading.api.services.IUserService;
 import eu.senla.auction.trading.entity.entities.Role;
 import eu.senla.auction.trading.entity.entities.User;
 import lombok.extern.slf4j.Slf4j;
+import org.omg.CosNaming.NamingContextPackage.NotFound;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -21,7 +24,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
@@ -32,8 +34,10 @@ import java.util.*;
 @ComponentScan(basePackages = {"eu.senla.auction.trading.rest.jwt"})
 public class UserService implements IUserService {
 
-    private static final String BANK_SERVICE = "http://payment:8080/bank";
-    private static final String CHAT_SERVICE = "http://chat:8080";
+    //    private static final String BANK_SERVICE = "http://payment:8080/bank";
+//    private static final String CHAT_SERVICE = "http://chat:8080";
+    private static final String BANK_SERVICE = "http://localhost:8081/bank";
+    private static final String CHAT_SERVICE = "http://localhost:8082";
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
@@ -82,7 +86,7 @@ public class UserService implements IUserService {
         HttpEntity<?> entityReq = new HttpEntity<>("http://localhost:8081/bank" +
                 "/getBalanceById/{id}", headers);
         ResponseEntity<BankDto> response = restTemplate.exchange("http://localhost:8081/bank" +
-                "/getBalanceById/{id}", HttpMethod.GET, entityReq, BankDto.class,user.getId());
+                "/getBalanceById/{id}", HttpMethod.GET, entityReq, BankDto.class, user.getId());
         user.setBalance(Optional.ofNullable(response.getBody().getBalance()).orElse(null));
         return UserMapper.mapHomePageDto(user);
 
@@ -117,19 +121,22 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public ChatViewDto chat(ChatMessageDto chatMessageDto) {
+    public ChatViewDto chat(ChatMessageDto chatMessageDto) throws NoAccess, NotFoundHand {
         chatMessageDto.setEmail(this.securityService.findLoggedInUser());
         ResponseEntity<MessagesDto> response = restTemplate.postForEntity(CHAT_SERVICE + "/message/chatMessages",
                 chatMessageDto, MessagesDto.class);
         ChatViewDto chatViewDto = new ChatViewDto();
-        if (response.getBody() != null) {
+        if (response.getStatusCodeValue() == 202) {
+            throw new NoAccess("You don't have access!");
+        } else if (response.getStatusCodeValue() == 204) {
+            throw new NotFoundHand("Does not exist!");
+        } else {
             chatViewDto.setId(response.getBody().getChatId().toString());
             chatViewDto.setMessages(buildMessagesForChat(response.getBody()));
             log.info("Creating new chat id: {}. Dealer - {}, Buyer - {}", response.getBody().getChatId().toString(),
                     response.getBody().getDealerEmail(), response.getBody().getBuyerEmail());
             return chatViewDto;
         }
-        return null;
     }
 
     @Override

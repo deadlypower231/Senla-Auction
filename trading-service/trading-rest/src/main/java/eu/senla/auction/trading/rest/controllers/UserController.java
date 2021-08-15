@@ -4,10 +4,14 @@ import eu.senla.auction.trading.api.dto.chat.ChatMessageDto;
 import eu.senla.auction.trading.api.dto.chat.ChatViewDto;
 import eu.senla.auction.trading.api.dto.chat.SendMessageDto;
 import eu.senla.auction.trading.api.dto.payment.BalanceDto;
+import eu.senla.auction.trading.api.exceptions.NoAccess;
+import eu.senla.auction.trading.api.exceptions.NotFoundHand;
 import eu.senla.auction.trading.api.services.IBetService;
 import eu.senla.auction.trading.api.services.ILotService;
 import eu.senla.auction.trading.api.services.IUserService;
 import eu.senla.auction.trading.entity.enums.Status;
+import lombok.extern.slf4j.Slf4j;
+import org.omg.CosNaming.NamingContextPackage.NotFound;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +19,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 @RestController
+@Slf4j
 @RequestMapping("/users")
 public class UserController {
 
@@ -62,8 +67,16 @@ public class UserController {
     }
 
     @GetMapping("/chat")
-    public ChatViewDto chat(@RequestBody ChatMessageDto chatMessageDto) {
-        return this.userService.chat(chatMessageDto);
+    public ChatViewDto chat(@RequestBody ChatMessageDto chatMessageDto) throws NoAccess, NotFoundHand {
+        try {
+            return this.userService.chat(chatMessageDto);
+        } catch (NotFoundHand notFoundHand) {
+            log.info("This user: {}, tried to access the chat: {}, does not exist!", chatMessageDto.getEmail(), chatMessageDto.getChatId());
+            throw new NotFoundHand(notFoundHand.getMessage());
+        } catch (NoAccess noAccess) {
+            log.info("This user: {}, tried to access the chat: {}", chatMessageDto.getEmail(), chatMessageDto.getChatId());
+            throw new NoAccess(noAccess.getMessage());
+        }
     }
 
     @PostMapping("/sendMessage")

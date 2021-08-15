@@ -3,6 +3,8 @@ package eu.senla.auction.chat.service.services;
 import eu.senla.auction.chat.api.dto.ChatMessageDto;
 import eu.senla.auction.chat.api.dto.MessagesDto;
 import eu.senla.auction.chat.api.dto.SendMessageDto;
+import eu.senla.auction.chat.api.exceptions.NoAccess;
+import eu.senla.auction.chat.api.exceptions.NullPointerExceptionHand;
 import eu.senla.auction.chat.api.mappers.MessageMapper;
 import eu.senla.auction.chat.api.repository.ChatRepository;
 import eu.senla.auction.chat.api.repository.MessageRepository;
@@ -10,6 +12,7 @@ import eu.senla.auction.chat.api.services.IMessageService;
 import eu.senla.auction.chat.entity.entities.Chat;
 import eu.senla.auction.chat.entity.entities.Message;
 import eu.senla.auction.chat.entity.enums.Status;
+import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
+@Slf4j
 public class MessageService implements IMessageService {
 
     private final MessageRepository messageRepository;
@@ -62,16 +66,22 @@ public class MessageService implements IMessageService {
     }
 
     @Override
-    public MessagesDto chat(ChatMessageDto chatMessageDto) {
+    public MessagesDto chat(ChatMessageDto chatMessageDto) throws NoAccess, NullPointerExceptionHand {
         Chat chat = this.chatRepository.findById(chatMessageDto.getChatId());
-        if (chat.getBuyerEmail().equals(chatMessageDto.getEmail()) || chat.getDealerEmail().equals(chatMessageDto.getEmail())) {
-            changeStatusToRead((chat.getBuyerEmail().equals(chatMessageDto.getEmail()) ? chat.getDealerMessages() : chat.getBuyerMessages()));
-            MessagesDto result = MessageMapper.mapMessagesDto(chat);
-            result.setBuyerMessage(buildMessages(chat.getBuyerMessages()));
-            result.setDealerMessage(buildMessages(chat.getDealerMessages()));
-            return result;
+        try {
+            if (chat.getBuyerEmail().equals(chatMessageDto.getEmail()) || chat.getDealerEmail().equals(chatMessageDto.getEmail())) {
+                MessagesDto result = MessageMapper.mapMessagesDto(chat);
+                changeStatusToRead((chat.getBuyerEmail().equals(chatMessageDto.getEmail()) ? chat.getDealerMessages() : chat.getBuyerMessages()));
+                result.setBuyerMessage(buildMessages(chat.getBuyerMessages()));
+                result.setDealerMessage(buildMessages(chat.getDealerMessages()));
+                return result;
+            } else {
+                throw new NoAccess("You don't have access!");
+            }
+        }catch (NullPointerException e){
+            throw new NullPointerExceptionHand("Does not exist!");
         }
-        return null;
+
     }
 
     private void changeStatusToRead(List<ObjectId> ids) {
