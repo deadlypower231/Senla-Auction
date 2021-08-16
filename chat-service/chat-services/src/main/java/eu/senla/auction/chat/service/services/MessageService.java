@@ -62,6 +62,9 @@ public class MessageService implements IMessageService {
         MessagesDto messagesDto = MessageMapper.mapMessagesDto(chat);
         messagesDto.setBuyerMessage(buildMessages(chat.getBuyerMessages()));
         messagesDto.setDealerMessage(buildMessages(chat.getDealerMessages()));
+
+        
+
         return messagesDto;
     }
 

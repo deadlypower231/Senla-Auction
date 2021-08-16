@@ -9,19 +9,21 @@ import eu.senla.auction.trading.api.dto.user.UserDto;
 import eu.senla.auction.trading.api.exceptions.NoAccess;
 import eu.senla.auction.trading.api.exceptions.NotFoundHand;
 import eu.senla.auction.trading.api.mappers.UserMapper;
+import eu.senla.auction.trading.api.providers.IChatProviders;
+import eu.senla.auction.trading.api.providers.IPaymentProviders;
 import eu.senla.auction.trading.api.repository.RoleRepository;
 import eu.senla.auction.trading.api.repository.UserRepository;
 import eu.senla.auction.trading.api.services.ISecurityService;
 import eu.senla.auction.trading.api.services.IUserService;
 import eu.senla.auction.trading.entity.entities.Role;
 import eu.senla.auction.trading.entity.entities.User;
+import eu.senla.auction.trading.service.asyncServices.AsyncUserService;
 import lombok.extern.slf4j.Slf4j;
-import org.omg.CosNaming.NamingContextPackage.NotFound;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -31,26 +33,26 @@ import java.util.*;
 
 @Service
 @Slf4j
-@ComponentScan(basePackages = {"eu.senla.auction.trading.rest.jwt"})
 public class UserService implements IUserService {
-
-    //    private static final String BANK_SERVICE = "http://payment:8080/bank";
-//    private static final String CHAT_SERVICE = "http://chat:8080";
-    private static final String BANK_SERVICE = "http://localhost:8081/bank";
-    private static final String CHAT_SERVICE = "http://localhost:8082";
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     private final RestTemplate restTemplate;
     private final ISecurityService securityService;
+    private final IChatProviders chatProviders;
+    private final IPaymentProviders paymentProviders;
+    private final AsyncUserService asyncUserService;
 
-    public UserService(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, RestTemplate restTemplate, ISecurityService securityService) {
+    public UserService(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, RestTemplate restTemplate, ISecurityService securityService, IChatProviders chatProviders, IPaymentProviders paymentProviders, AsyncUserService asyncUserService) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
         this.restTemplate = restTemplate;
         this.securityService = securityService;
+        this.chatProviders = chatProviders;
+        this.paymentProviders = paymentProviders;
+        this.asyncUserService = asyncUserService;
     }
 
     @Override
@@ -72,11 +74,17 @@ public class UserService implements IUserService {
         BankDto postBank = new BankDto();
         postBank.setUserId(savedUser.getId().toString());
         postBank.setBalance(0.0);
-        BankDto bankDto = restTemplate.postForObject(BANK_SERVICE + "/create", postBank, BankDto.class);
-        savedUser.setBalance(Objects.requireNonNull(bankDto).getBalance());
-        UserDto result = UserMapper.mapUserDto(this.userRepository.save(savedUser));
-        return result;
+        try {
+            BankDto bankDto = paymentProviders.createBalance(postBank);
+            savedUser.setBalance(Objects.requireNonNull(bankDto).getBalance());
+        } catch (Exception e) {
+            log.info("Access denied to the bank server! user: {}", savedUser.getEmail());
+            savedUser.setBalance(0.0);
+            asyncUserService.createBalance(postBank);
+        }
+        return UserMapper.mapUserDto(this.userRepository.save(savedUser));
     }
+
 
     @Override
     public HomePageDto getCurrentUser(String token) {
@@ -96,7 +104,7 @@ public class UserService implements IUserService {
     public Boolean addBalance(BalanceDto balanceDto) {
         User user = userRepository.findByEmail(this.securityService.findLoggedInUser());
         balanceDto.setUserId(String.valueOf(user.getId()));
-        Boolean result = restTemplate.postForObject(BANK_SERVICE + "/addBalance", balanceDto, Boolean.class);
+        Boolean result = paymentProviders.addBalance(balanceDto);
         if (Boolean.TRUE.equals(result)) {
             user.setBalance(user.getBalance() + balanceDto.getAmount());
             this.userRepository.save(user);
@@ -106,12 +114,10 @@ public class UserService implements IUserService {
         }
     }
 
-    //todo rewrite to 1 method
     @Override
     public ChatViewDto sendMessage(SendMessageDto sendMessageDto) {
         sendMessageDto.setEmail(this.securityService.findLoggedInUser());
-        ResponseEntity<MessagesDto> response = restTemplate.postForEntity(CHAT_SERVICE + "/message/add",
-                sendMessageDto, MessagesDto.class);
+        ResponseEntity<MessagesDto> response = chatProviders.sendMessages(sendMessageDto);
         ChatViewDto chatViewDto = new ChatViewDto();
         if (response.getBody() != null) {
             chatViewDto.setId(response.getBody().getChatId().toString());
@@ -123,18 +129,15 @@ public class UserService implements IUserService {
     @Override
     public ChatViewDto chat(ChatMessageDto chatMessageDto) throws NoAccess, NotFoundHand {
         chatMessageDto.setEmail(this.securityService.findLoggedInUser());
-        ResponseEntity<MessagesDto> response = restTemplate.postForEntity(CHAT_SERVICE + "/message/chatMessages",
-                chatMessageDto, MessagesDto.class);
+        ResponseEntity<MessagesDto> response = chatProviders.getChat(chatMessageDto);
         ChatViewDto chatViewDto = new ChatViewDto();
         if (response.getStatusCodeValue() == 202) {
             throw new NoAccess("You don't have access!");
         } else if (response.getStatusCodeValue() == 204) {
             throw new NotFoundHand("Does not exist!");
         } else {
-            chatViewDto.setId(response.getBody().getChatId().toString());
+            chatViewDto.setId(Objects.requireNonNull(response.getBody()).getChatId().toString());
             chatViewDto.setMessages(buildMessagesForChat(response.getBody()));
-            log.info("Creating new chat id: {}. Dealer - {}, Buyer - {}", response.getBody().getChatId().toString(),
-                    response.getBody().getDealerEmail(), response.getBody().getBuyerEmail());
             return chatViewDto;
         }
     }
@@ -142,8 +145,7 @@ public class UserService implements IUserService {
     @Override
     public List<String> getChats() {
         String email = this.securityService.findLoggedInUser();
-        ResponseEntity<ChatsDto> response = this.restTemplate.getForEntity(CHAT_SERVICE + "/chat/getChats{email}",
-                ChatsDto.class, email);
+        ResponseEntity<ChatsDto> response = chatProviders.getChats(email);
         if (response.getBody() != null) {
             return response.getBody().getChatsId();
         }
