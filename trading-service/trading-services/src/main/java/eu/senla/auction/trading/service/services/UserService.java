@@ -23,11 +23,11 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.net.ConnectException;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -78,9 +78,11 @@ public class UserService implements IUserService {
             BankDto bankDto = paymentProviders.createBalance(postBank);
             savedUser.setBalance(Objects.requireNonNull(bankDto).getBalance());
         } catch (Exception e) {
-            log.info("Access denied to the bank server! user: {}", savedUser.getEmail());
-            savedUser.setBalance(0.0);
-            asyncUserService.createBalance(postBank);
+            if (e.getCause() instanceof ConnectException) {
+                log.info("Access denied to the bank server! user: {}", savedUser.getEmail());
+                savedUser.setBalance(0.0);
+                asyncUserService.createBalance(postBank);
+            }
         }
         return UserMapper.mapUserDto(this.userRepository.save(savedUser));
     }

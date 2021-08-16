@@ -21,4 +21,9 @@ public class DefaultAdvice {
         return new ResponseEntity<>(new Response(e.getMessage()), HttpStatus.OK);
     }
 
+    @ExceptionHandler(DuplicateKeyException.class)
+    public ResponseEntity<Response> handleExceptions(DuplicateKeyException e) {
+        return new ResponseEntity<>(new Response(e.getMessage()), HttpStatus.OK);
+    }
+
 }
