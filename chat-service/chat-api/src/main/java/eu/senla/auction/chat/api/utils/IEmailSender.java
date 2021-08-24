@@ -8,6 +8,6 @@ public interface IEmailSender {
 
     void sendEmailToDealer(Chat chat);
 
-    void sendNotificationEmail(String email, int numberOfMessages, String chatId) throws Exception;
+    void sendNotificationEmail(String email, String chatId) throws Exception;
 
 }

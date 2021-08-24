@@ -9,6 +9,7 @@ import eu.senla.auction.chat.api.mappers.MessageMapper;
 import eu.senla.auction.chat.api.repository.ChatRepository;
 import eu.senla.auction.chat.api.repository.MessageRepository;
 import eu.senla.auction.chat.api.services.IMessageService;
+import eu.senla.auction.chat.api.utils.IScheduledTask;
 import eu.senla.auction.chat.entity.entities.Chat;
 import eu.senla.auction.chat.entity.entities.Message;
 import eu.senla.auction.chat.entity.enums.Status;
@@ -21,6 +22,11 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+
+import static java.util.concurrent.TimeUnit.SECONDS;
 
 @Service
 @Slf4j
@@ -28,10 +34,13 @@ public class MessageService implements IMessageService {
 
     private final MessageRepository messageRepository;
     private final ChatRepository chatRepository;
+    private final IScheduledTask scheduledTask;
+    private final ScheduledThreadPoolExecutor threadPoolExecutor = new ScheduledThreadPoolExecutor(Integer.MAX_VALUE);
 
-    public MessageService(MessageRepository messageRepository, ChatRepository chatRepository) {
+    public MessageService(MessageRepository messageRepository, ChatRepository chatRepository, IScheduledTask scheduledTask) {
         this.messageRepository = messageRepository;
         this.chatRepository = chatRepository;
+        this.scheduledTask = scheduledTask;
     }
 
     @Override
@@ -42,6 +51,7 @@ public class MessageService implements IMessageService {
         message.setText(sendMessageDto.getText());
         message.setTimePublication(LocalDateTime.now());
         Message savedMessage = this.messageRepository.save(message);
+        this.threadPoolExecutor.schedule(scheduledTask.sendNotification(sendMessageDto.getEmail(), message, sendMessageDto.getChatId()), 1, SECONDS);
         Chat chat = this.chatRepository.findById(sendMessageDto.getChatId());
         if (chat.getBuyerEmail().equals(sendMessageDto.getEmail())) {
             changeStatusToRead(chat.getDealerMessages());
@@ -63,7 +73,6 @@ public class MessageService implements IMessageService {
         messagesDto.setBuyerMessage(buildMessages(chat.getBuyerMessages()));
         messagesDto.setDealerMessage(buildMessages(chat.getDealerMessages()));
 
-        
 
         return messagesDto;
     }
@@ -81,7 +90,7 @@ public class MessageService implements IMessageService {
             } else {
                 throw new NoAccess("You don't have access!");
             }
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             throw new NullPointerExceptionHand("Does not exist!");
         }
 

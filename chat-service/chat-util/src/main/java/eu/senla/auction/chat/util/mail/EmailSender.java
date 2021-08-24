@@ -66,17 +66,17 @@ public class EmailSender implements IEmailSender {
     }
 
     @Override
-    public void sendNotificationEmail(String email, int numberOfMessages, String chatId) throws Exception {
+    public void sendNotificationEmail(String email, String chatId) throws Exception {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, UTF_8);
-        String textEmail = prepareNotificationMessage(numberOfMessages);
+        String textEmail = prepareNotificationMessage();
         String subject = "У вас есть непрочитанные сообщения в чате №: " + chatId;
         configureMimeMessageHelper(helper, auctionEmailAddress, email, textEmail, subject);
         mailSender.send(message);
     }
 
-    private String prepareNotificationMessage(int numberOfMessages) {
-        VelocityContext context = creatVelocityWithBasicParametersNotification(numberOfMessages);
+    private String prepareNotificationMessage() {
+        VelocityContext context = creatVelocityWithBasicParametersNotification();
         StringWriter stringWriter = new StringWriter();
         velocityEngine.mergeTemplate("templates/mail/notification.vm", UTF_8, context, stringWriter);
         return stringWriter.toString();
@@ -96,10 +96,8 @@ public class EmailSender implements IEmailSender {
         return stringWriter.toString();
     }
 
-    private VelocityContext creatVelocityWithBasicParametersNotification(int numberOfMessages) {
-        VelocityContext context = new VelocityContext();
-        context.put("count", numberOfMessages);
-        return context;
+    private VelocityContext creatVelocityWithBasicParametersNotification() {
+        return new VelocityContext();
     }
 
     private VelocityContext creatVelocityWithBasicParameters(Chat chat) {
