@@ -11,10 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.Callable;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-
-import static java.util.concurrent.TimeUnit.SECONDS;
 
 @Component
 @Slf4j
@@ -33,7 +30,7 @@ public class ScheduledTask implements IScheduledTask {
     public Callable<String> sendNotification(String email, Message message, String chatId) {
         return () -> {
             for (Thread t : Thread.getAllStackTraces().keySet()) {
-                if (t.getName().equalsIgnoreCase(email)){
+                if (t.getName().equalsIgnoreCase(email)) {
                     t.interrupt();
                 }
             }
@@ -45,9 +42,10 @@ public class ScheduledTask implements IScheduledTask {
                 Chat chat = this.chatRepository.findById(chatId);
                 if (email.equalsIgnoreCase(chat.getBuyerEmail())) {
                     this.emailSender.sendNotificationEmail(chat.getDealerEmail(), chatId);
-                }else {
+                } else {
                     this.emailSender.sendNotificationEmail(chat.getBuyerEmail(), chatId);
                 }
+                Thread.currentThread().interrupt();
             } catch (Exception e) {
                 log.info(e.getMessage());
             }

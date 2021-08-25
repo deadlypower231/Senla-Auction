@@ -22,11 +22,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
-import static java.util.concurrent.TimeUnit.SECONDS;
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 @Service
 @Slf4j
@@ -35,12 +33,13 @@ public class MessageService implements IMessageService {
     private final MessageRepository messageRepository;
     private final ChatRepository chatRepository;
     private final IScheduledTask scheduledTask;
-    private final ScheduledThreadPoolExecutor threadPoolExecutor = new ScheduledThreadPoolExecutor(Integer.MAX_VALUE);
+    private final ScheduledThreadPoolExecutor scheduledThreadPoolExecutor;
 
-    public MessageService(MessageRepository messageRepository, ChatRepository chatRepository, IScheduledTask scheduledTask) {
+    public MessageService(MessageRepository messageRepository, ChatRepository chatRepository, IScheduledTask scheduledTask, ScheduledThreadPoolExecutor scheduledThreadPoolExecutor) {
         this.messageRepository = messageRepository;
         this.chatRepository = chatRepository;
         this.scheduledTask = scheduledTask;
+        this.scheduledThreadPoolExecutor = scheduledThreadPoolExecutor;
     }
 
     @Override
@@ -51,7 +50,7 @@ public class MessageService implements IMessageService {
         message.setText(sendMessageDto.getText());
         message.setTimePublication(LocalDateTime.now());
         Message savedMessage = this.messageRepository.save(message);
-        this.threadPoolExecutor.schedule(scheduledTask.sendNotification(sendMessageDto.getEmail(), message, sendMessageDto.getChatId()), 1, SECONDS);
+        this.scheduledThreadPoolExecutor.schedule(scheduledTask.sendNotification(sendMessageDto.getEmail(), message, sendMessageDto.getChatId()), 1, MILLISECONDS);
         Chat chat = this.chatRepository.findById(sendMessageDto.getChatId());
         if (chat.getBuyerEmail().equals(sendMessageDto.getEmail())) {
             changeStatusToRead(chat.getDealerMessages());
