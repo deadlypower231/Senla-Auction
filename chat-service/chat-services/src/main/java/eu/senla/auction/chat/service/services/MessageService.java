@@ -81,6 +81,21 @@ public class MessageService implements IMessageService {
         Chat chat = this.chatRepository.findById(chatMessageDto.getChatId());
         try {
             if (chat.getBuyerEmail().equals(chatMessageDto.getEmail()) || chat.getDealerEmail().equals(chatMessageDto.getEmail())) {
+                if (chat.getBuyerEmail().equalsIgnoreCase(chatMessageDto.getEmail())) {
+                    for (Thread t :
+                            Thread.getAllStackTraces().keySet()) {
+                        if (t.getName().equalsIgnoreCase(chat.getDealerEmail() + chat.getId().toString())) {
+                            t.interrupt();
+                        }
+                    }
+                } else {
+                    for (Thread t :
+                            Thread.getAllStackTraces().keySet()) {
+                        if (t.getName().equalsIgnoreCase(chat.getBuyerEmail() + chat.getId().toString())) {
+                            t.interrupt();
+                        }
+                    }
+                }
                 MessagesDto result = MessageMapper.mapMessagesDto(chat);
                 changeStatusToRead((chat.getBuyerEmail().equals(chatMessageDto.getEmail()) ? chat.getDealerMessages() : chat.getBuyerMessages()));
                 result.setBuyerMessage(buildMessages(chat.getBuyerMessages()));

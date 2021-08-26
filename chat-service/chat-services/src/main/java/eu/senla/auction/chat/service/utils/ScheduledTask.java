@@ -30,11 +30,11 @@ public class ScheduledTask implements IScheduledTask {
     public Callable<String> sendNotification(String email, Message message, String chatId) {
         return () -> {
             for (Thread t : Thread.getAllStackTraces().keySet()) {
-                if (t.getName().equalsIgnoreCase(email)) {
+                if (t.getName().equalsIgnoreCase(email + chatId)) {
                     t.interrupt();
                 }
             }
-            Thread.currentThread().setName(email);
+            Thread.currentThread().setName(email + chatId);
             Thread.sleep(TimeUnit.HOURS.toMillis(1));
             try {
                 message.setNotificationStatus(Status.SENT);
