@@ -3,8 +3,8 @@ package eu.senla.auction.chat.service.services;
 import eu.senla.auction.chat.api.dto.ChatMessageDto;
 import eu.senla.auction.chat.api.dto.MessagesDto;
 import eu.senla.auction.chat.api.dto.SendMessageDto;
-import eu.senla.auction.chat.api.exceptions.NoAccess;
-import eu.senla.auction.chat.api.exceptions.NullPointerExceptionHand;
+import eu.senla.auction.chat.api.exceptions.NoAccessException;
+import eu.senla.auction.chat.api.exceptions.NullPointerHandException;
 import eu.senla.auction.chat.api.mappers.MessageMapper;
 import eu.senla.auction.chat.api.repository.ChatRepository;
 import eu.senla.auction.chat.api.repository.MessageRepository;
@@ -71,30 +71,26 @@ public class MessageService implements IMessageService {
         MessagesDto messagesDto = MessageMapper.mapMessagesDto(chat);
         messagesDto.setBuyerMessage(buildMessages(chat.getBuyerMessages()));
         messagesDto.setDealerMessage(buildMessages(chat.getDealerMessages()));
-
-
         return messagesDto;
     }
 
     @Override
-    public MessagesDto chat(ChatMessageDto chatMessageDto) throws NoAccess, NullPointerExceptionHand {
+    public MessagesDto chat(ChatMessageDto chatMessageDto) throws NoAccessException, NullPointerHandException {
         Chat chat = this.chatRepository.findById(chatMessageDto.getChatId());
         try {
             if (chat.getBuyerEmail().equals(chatMessageDto.getEmail()) || chat.getDealerEmail().equals(chatMessageDto.getEmail())) {
                 if (chat.getBuyerEmail().equalsIgnoreCase(chatMessageDto.getEmail())) {
-                    for (Thread t :
-                            Thread.getAllStackTraces().keySet()) {
-                        if (t.getName().equalsIgnoreCase(chat.getDealerEmail() + chat.getId().toString())) {
-                            t.interrupt();
+                    Thread.getAllStackTraces().keySet().forEach(x -> {
+                        if (x.getName().equalsIgnoreCase(chat.getDealerEmail() + chat.getId().toString())) {
+                            x.interrupt();
                         }
-                    }
+                    });
                 } else {
-                    for (Thread t :
-                            Thread.getAllStackTraces().keySet()) {
-                        if (t.getName().equalsIgnoreCase(chat.getBuyerEmail() + chat.getId().toString())) {
-                            t.interrupt();
+                    Thread.getAllStackTraces().keySet().forEach(x -> {
+                        if (x.getName().equalsIgnoreCase(chat.getBuyerEmail() + chat.getId().toString())) {
+                            x.interrupt();
                         }
-                    }
+                    });
                 }
                 MessagesDto result = MessageMapper.mapMessagesDto(chat);
                 changeStatusToRead((chat.getBuyerEmail().equals(chatMessageDto.getEmail()) ? chat.getDealerMessages() : chat.getBuyerMessages()));
@@ -102,10 +98,10 @@ public class MessageService implements IMessageService {
                 result.setDealerMessage(buildMessages(chat.getDealerMessages()));
                 return result;
             } else {
-                throw new NoAccess("You don't have access!");
+                throw new NoAccessException("You don't have access!");
             }
         } catch (NullPointerException e) {
-            throw new NullPointerExceptionHand("Does not exist!");
+            throw new NullPointerHandException("Does not exist!");
         }
 
     }

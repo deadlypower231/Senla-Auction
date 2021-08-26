@@ -3,8 +3,8 @@ package eu.senla.auction.chat.rest.controllers;
 import eu.senla.auction.chat.api.dto.ChatMessageDto;
 import eu.senla.auction.chat.api.dto.MessagesDto;
 import eu.senla.auction.chat.api.dto.SendMessageDto;
-import eu.senla.auction.chat.api.exceptions.NoAccess;
-import eu.senla.auction.chat.api.exceptions.NullPointerExceptionHand;
+import eu.senla.auction.chat.api.exceptions.NoAccessException;
+import eu.senla.auction.chat.api.exceptions.NullPointerHandException;
 import eu.senla.auction.chat.api.services.IMessageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -32,16 +32,16 @@ public class MessageController {
     }
 
     @PostMapping("/chatMessages")
-    public ResponseEntity<MessagesDto> chat(@RequestBody ChatMessageDto chatMessageDto) throws NoAccess, NullPointerExceptionHand{
+    public ResponseEntity<MessagesDto> chat(@RequestBody ChatMessageDto chatMessageDto) throws NoAccessException, NullPointerHandException {
         try {
             return new ResponseEntity<>(this.messageService.chat(chatMessageDto), HttpStatus.OK);
-        } catch (NoAccess e) {
+        } catch (NoAccessException e) {
             log.info("This user: {}, tried to access the chat: {}", chatMessageDto.getEmail(), chatMessageDto.getChatId());
-            throw new NoAccess("You don't have access!");
-        } catch (NullPointerExceptionHand e){
+            throw new NoAccessException("You don't have access!");
+        } catch (NullPointerHandException e){
             log.info("This user: {}, tried to access the chat: {}, does not exist",
                     chatMessageDto.getEmail(), chatMessageDto.getChatId());
-            throw new NullPointerExceptionHand("Does not exist!");
+            throw new NullPointerHandException("Does not exist!");
         }
     }
 
