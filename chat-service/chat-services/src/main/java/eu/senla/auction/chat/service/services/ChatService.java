@@ -41,6 +41,7 @@ public class ChatService implements IChatService {
     public ChatsDto getChats(String email) {
         List<Chat> buyerResult = this.chatRepository.findAllByBuyerEmail(email);
         List<Chat> dealerResult = this.chatRepository.findAllByDealerEmail(email);
+
         ChatsDto chatsDto = new ChatsDto();
         Set<Chat> result = new HashSet<>();
         result.addAll(buyerResult);

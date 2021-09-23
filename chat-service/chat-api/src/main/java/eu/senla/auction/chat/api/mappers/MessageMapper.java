@@ -9,7 +9,7 @@ public class MessageMapper {
 
     public MessagesDto mapMessagesDto(Chat source){
         return MessagesDto.builder()
-                .chatId(source.getId())
+                .chatId(source.getId().toString())
                 .dealerEmail(source.getDealerEmail())
                 .buyerEmail(source.getBuyerEmail())
                 .build();

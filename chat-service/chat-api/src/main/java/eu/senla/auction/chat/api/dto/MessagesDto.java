@@ -4,6 +4,7 @@ import lombok.*;
 import org.bson.types.ObjectId;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Map;
 
 @Getter
@@ -13,10 +14,10 @@ import java.util.Map;
 @Builder
 public class MessagesDto {
 
-    private ObjectId chatId;
+    private String chatId;
     private String buyerEmail;
     private String dealerEmail;
-    private Map<LocalDateTime, String> buyerMessage;
-    private Map<LocalDateTime, String> dealerMessage;
+    private Map<Date, String> buyerMessage;
+    private Map<Date, String> dealerMessage;
 
 }

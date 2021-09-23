@@ -34,7 +34,10 @@ public class Bet extends AEntity<ObjectId> {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         Bet bet = (Bet) o;
-        return user.equals(bet.user) && Objects.equals(price, bet.price) && dateTime.equals(bet.dateTime) && lot.equals(bet.lot) && status == bet.status && paymentStatus == bet.paymentStatus && Objects.equals(chat, bet.chat);
+        return user.equals(bet.user) && Objects.equals(price, bet.price)
+                && dateTime.equals(bet.dateTime) && lot.equals(bet.lot)
+                && status == bet.status && paymentStatus == bet.paymentStatus
+                && Objects.equals(chat, bet.chat);
     }
 
     @Override

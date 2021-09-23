@@ -10,6 +10,7 @@ import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Objects;
 
 @Setter
@@ -21,7 +22,7 @@ import java.util.Objects;
 public class Message extends AEntity<ObjectId> {
 
     private String text;
-    private LocalDateTime timePublication;
+    private Date timePublication;
     private Status status;
     private Status notificationStatus;
 
